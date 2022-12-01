@@ -22,6 +22,11 @@ execute:
     - Writing:
 
 -->
+
+# Github repository
+
+You can find the full code repository on [my github](https://github.com/DamonCharlesRoberts/advent_of_code)
+
 # Importing packages
 
 ```{python}
