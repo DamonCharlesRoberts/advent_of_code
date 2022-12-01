@@ -7,7 +7,7 @@
 
 # File Organization
 - assets/
-    * aoc_env: conda environment
+    * aoc_env.yaml: conda environment
 - code/
     *
 - data/
@@ -16,11 +16,14 @@
 - Created env by:
 
 ```{bash}
-cd /advent_2022/assets/
-conda create --prefix ./aoc_env
+conda create aoc_env jupyter
 ```
 - Activate env:
 
 ```{bash}
-conda activate /advent_2022/assets/aoc_env
+conda activate aoc_env
+```
+- Export env:
+```{bash}
+conda env export > aoc_env.yml
 ```
