@@ -5,6 +5,7 @@ date: today
 toc: true
 format:
   html:
+    theme: sketchy
     html-math-method: katex 
     code-tools: true
     self-contained: true
