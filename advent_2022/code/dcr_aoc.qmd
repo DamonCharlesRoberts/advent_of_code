@@ -12,6 +12,15 @@ execute:
     warning: false
 ---
 
+<!--
+    - Description: QMD script for Advent of Code
+    - Updated: 2022-12-01
+    - Updated by: dcr 
+    - Code:
+    
+    - Writing:
+
+-->
 # Importing packages
 
 ```{python}
@@ -22,6 +31,9 @@ import numpy as np # for array management
 import polars as pl # for data munging
 from itertools import groupby # for managing list of lists
 ```
+<!--
+    END OF IMPORTING PACKAGES SECTION
+-->
 
 # Set up a duckdb database for the data in these problems.
 
@@ -29,12 +41,15 @@ from itertools import groupby # for managing list of lists
 # create database
 db = duckdb.connect("../data/aoc_2022_db")
 ```
+<!--
+    END OF SETTING UP A DUCKDB DATABASE SECTION
+-->
 
 # Day 1
 
 ## Problem 1
 
-::: {.callout-note minimal="simple"}
+::: {.callout-note appearance="minimal"}
 
 ## Problem
 
@@ -86,7 +101,7 @@ txt3 = [[int(j) for j in i] for i in txt2]
 
 # Convert to dataframe
 day1 = pl.DataFrame(
-    { "Calories": txt3
+    { "Calories": txt3 # add calories column from txt3 list
     }
 )
 
@@ -99,15 +114,28 @@ day1 = pl.DataFrame(
 
 day1_2 = day1.with_column(
     pl.col("Calories").arr.eval(pl.element()
-    .sum()).alias("Total")
+    .sum()).alias("Total") # take each element in the list for the Calories column, and sum it, then put that in a Total column
 ).with_column(
-    pl.col("Total").arr.get(0).cast(pl.Int64).alias("Total")
+    pl.col("Total").arr.get(0).cast(pl.Int64).alias("Total") # made Total a list column, grab the element and just write over it, so it is int column
 ).with_column(
-    pl.col("Total").sort_by("Total")
+    pl.col("Total").sort_by("Total") # sort the dataframe by the total column
 )
-
-print(day1_2.filter(pl.col("Total") == pl.col("Total").max()))
 ```
+
+:::{.callout-note appearance="minimal"}
+## Part 1 Answer
+
+```{python}
+#| label: display-day-1-1-answer
+
+# Print answer
+print(
+    day1_2.filter( # filter from day1_2 
+        pl.col("Total") == pl.col("Total").max() # find the maximum element in Total column
+    )
+)
+```
+:::
 
 ## Problem 2
 
@@ -115,14 +143,16 @@ print(day1_2.filter(pl.col("Total") == pl.col("Total").max()))
 
 ```{python}
 #| label: day1-select-top-3
-day1_3 = day1_2.select(pl.col("Total").top_k(k = 3))
+day1_3 = day1_2.select( # select from day1_2
+    pl.col("Total").top_k(k = 3) # take the rows with the highest three Total
+    )
 ```
 
-3. Sum the tope three
+3. Sum the top three
 
 ```{python}
 #| label: day1-sum
-print(day1_3.sum())
+day1_3_ans = day1_3.sum() # print the sum of the top 3
 ```
 
 4. Store the dataframe into the database
@@ -136,3 +166,15 @@ db.execute('''
     create or replace table day_1_1 as select * from day1_4
 ''')
 ```
+
+:::{.callout-note appearance="minimal"}
+
+## Part 2 Answer
+```{python}
+print(day1_3_ans)
+```
+
+:::
+<!--
+    END OF DAY 1 SECTION
+-->
