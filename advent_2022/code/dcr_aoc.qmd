@@ -1,0 +1,138 @@
+---
+title: "2022 Advent of Code"
+author: "Damon C. Roberts"
+date: today
+toc: true
+format:
+  html:
+    html-math-method: katex 
+    code-tools: true
+    self-contained: true
+execute:
+    warning: false
+---
+
+# Importing packages
+
+```{python}
+#| label: module-import
+
+import duckdb # for database management
+import numpy as np # for array management
+import polars as pl # for data munging
+from itertools import groupby # for managing list of lists
+```
+
+# Set up a duckdb database for the data in these problems.
+
+```{python}
+# create database
+db = duckdb.connect("../data/aoc_2022_db")
+```
+
+# Day 1
+
+## Problem 1
+
+::: {.callout-note minimal="simple"}
+
+## Problem
+
+The jungle must be too overgrown and difficult to navigate in vehicles or access from the air; the Elves' expedition traditionally goes on foot. As your boats approach land, the Elves begin taking inventory of their supplies. One important consideration is food - in particular, the number of Calories each Elf is carrying (your puzzle input). | The Elves take turns writing down the number of Calories contained by the various meals, snacks, rations, etc. that they've brought with them, one item per line. Each Elf separates their own inventory from the previous Elf's inventory (if any) by a blank line.
+
+For example, suppose the Elves finish writing their items' Calories and end up with the following list:
+
+1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000
+
+This list represents the Calories of the food carried by five Elves:
+
+- The first Elf is carrying food with 1000, 2000, and 3000 Calories, a total of 6000 Calories.
+- The second Elf is carrying one food item with 4000 Calories.
+- The third Elf is carrying food with 5000 and 6000 Calories, a total of 11000 Calories.
+- The fourth Elf is carrying food with 7000, 8000, and 9000 Calories, a total of 24000 Calories.
+- The fifth Elf is carrying one food item with 10000 Calories.
+
+In case the Elves get hungry and need extra snacks, they need to know which Elf to ask: they'd like to know how many Calories are being carried by the Elf carrying the most Calories. In the example above, this is 24000 (carried by the fourth Elf).
+
+Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
+:::
+
+1. Enter the data into a database:
+
+```{python}
+#| label: day-1.1_dataframe
+
+# Load input data
+    #* Open the txt file and enter the lines into a list object
+with open("../data/day-1-1-input.txt") as f:
+    txt = [line.strip() for line in f]
+    #* Create a list of list objects based on the empty element
+txt2 = [list(sub) for ele, sub in groupby(txt, key = bool) if ele]
+    #* convert the elements of the list of list objects to integers
+txt3 = [[int(j) for j in i] for i in txt2]
+
+# Convert to dataframe
+day1 = pl.DataFrame(
+    { "Calories": txt3
+    }
+)
+
+```
+
+2. Now groupby elf and see which one has most:
+
+```{python}
+#| label: day-1-1-database-count
+
+day1_2 = day1.with_column(
+    pl.col("Calories").arr.eval(pl.element()
+    .sum()).alias("Total")
+).with_column(
+    pl.col("Total").arr.get(0).cast(pl.Int64).alias("Total")
+).with_column(
+    pl.col("Total").sort_by("Total")
+)
+
+print(day1_2.filter(pl.col("Total") == pl.col("Total").max()))
+```
+
+## Problem 2
+
+2. Get three elves with most calories
+
+```{python}
+#| label: day1-select-top-3
+day1_3 = day1_2.select(pl.col("Total").top_k(k = 3))
+```
+
+3. Sum the tope three
+
+```{python}
+#| label: day1-sum
+print(day1_3.sum())
+```
+
+4. Store the dataframe into the database
+
+```{python}
+#| label: store-day-1-day1
+# Convert day12 to pyarrow
+day1_4 = day1_3.to_arrow()
+# Store dataframe as table
+db.execute('''
+    create or replace table day_1_1 as select * from day1_4
+''')
+```
