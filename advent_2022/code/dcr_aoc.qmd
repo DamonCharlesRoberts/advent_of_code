@@ -73,7 +73,7 @@ db = duckdb.connect("../data/aoc_2022_db")
 
 ## Problem 1
 
-::: {.callout-note appearance="minimal"}
+::: {.callout-important appearance="minimal"}
 
 ## Problem
 
@@ -146,24 +146,28 @@ day1_2 = day1.with_column(
 )
 ```
 
-:::{.callout-note appearance="minimal"}
+3. Filter for the highest
+```{python}
+#| label: day-1-1-filter
+day1_2_filtered = day1_2.filter( # filter from day1_2 
+        pl.col("Total") == pl.col("Total").max() # find the maximum element in Total column
+)
+```
+
+:::{.callout-important appearance="minimal"}
 ## Part 1 Answer
 
 ```{python}
 #| label: display-day-1-1-answer
 
 # Print answer
-print(
-    day1_2.filter( # filter from day1_2 
-        pl.col("Total") == pl.col("Total").max() # find the maximum element in Total column
-    )
-)
+print("Day 1, Part 1 Answer: " + str(day1_2_filtered.select("Total")[0,0]))
 ```
 :::
 
 ## Problem 2
 
-:::{.callout-note appearance="minimal"}
+:::{.callout-important appearance="minimal"}
 ## Problem
 
 By the time you calculate the answer to the Elves' question, they've already realized that the Elf carrying the most Calories of food might eventually run out of snacks.
@@ -203,12 +207,12 @@ db.execute('''
 ''')
 ```
 
-:::{.callout-note appearance="minimal"}
+:::{.callout-important appearance="minimal"}
 
 ## Part 2 Answer
 ```{python}
 #| label: display-day-1-2-answer
-print(day1_3_ans)
+print("Day 1, Part 2 Answer: " + str(day1_3_ans.select("Total")[0,0]))
 ```
 
 :::
@@ -220,7 +224,7 @@ print(day1_3_ans)
 
 ## Problem 1
 
-:::{.callout-note appearance="minimal"}
+:::{.callout-important appearance="minimal"}
 ## Problem
 
 The Elves begin to set up camp on the beach. To decide whose tent gets to be closest to the snack storage, a giant Rock Paper Scissors tournament is already in progress.
@@ -354,18 +358,18 @@ score = day2_4.select(
 ).sum() # take sum of rows in column
 ```
 
-:::{.callout-note appearance="minimal"}
+:::{.callout-important appearance="minimal"}
 ## Answer
 
 ```{python}
 #| label: display-2-1-answer
-print(score)
+print("Day 2, Part 1 Answer: " + str(score.select("Score")[0,0]))
 ```
 :::
 
 ## Problem 2
 
-:::{.callout-note appearance="minimal"}
+:::{.callout-important appearance="minimal"}
 ## Problem 
 The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
 
@@ -498,11 +502,12 @@ db.execute('''
 ''')
 
 ```
-:::{.callout-note appearance="minimal"}
+:::{.callout-important appearance="minimal"}
 ## Answer
 ```{python}
 #| label: display-day-2-2-answer
-print(score2)
+print("Day 2, Part 2 Answer: " + str(score2.select("Score")[0,0]))
+```
 :::
 
 - Wow! That was verbose.
