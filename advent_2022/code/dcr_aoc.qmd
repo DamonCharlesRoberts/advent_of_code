@@ -908,6 +908,269 @@ I first did this with some loops and it was real quick and easy, but I have a pr
 <!--
     END OF Day 3 Section
 -->
+
+# Day 4
+
+##  Part 1
+
+:::{.callout-important appearance="minimal"}
+## Problem
+Space needs to be cleared before the last supplies can be unloaded from the ships, and so several Elves have been assigned the job of cleaning up sections of the camp. Every section has a unique ID number, and each Elf is assigned a range of section IDs.
+
+However, as some of the Elves compare their section assignments with each other, they've noticed that many of the assignments overlap. To try to quickly find overlaps and reduce duplicated effort, the Elves pair up and make a big list of the section assignments for each pair (your puzzle input).
+
+For example, consider the following list of section assignment pairs:
+
+2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8
+For the first few pairs, this list means:
+
+Within the first pair of Elves, the first Elf was assigned sections 2-4 (sections 2, 3, and 4), while the second Elf was assigned sections 6-8 (sections 6, 7, 8).
+The Elves in the second pair were each assigned two sections.
+The Elves in the third pair were each assigned three sections: one got sections 5, 6, and 7, while the other also got 7, plus 8 and 9.
+This example list uses single-digit section IDs to make it easier to draw; your actual list might contain larger numbers. Visually, these pairs of section assignments look like this:
+
+.234.....  2-4
+.....678.  6-8
+
+.23......  2-3
+...45....  4-5
+
+....567..  5-7
+......789  7-9
+
+.2345678.  2-8
+..34567..  3-7
+
+.....6...  6-6
+...456...  4-6
+
+.23456...  2-6
+...45678.  4-8
+Some of the pairs have noticed that one of their assignments fully contains the other. For example, 2-8 fully contains 3-7, and 6-6 is fully contained by 4-6. In pairs where one assignment fully contains the other, one Elf in the pair would be exclusively cleaning sections their partner will already be cleaning, so these seem like the most in need of reconsideration. In this example, there are 2 such pairs.
+
+In how many assignment pairs does one range fully contain the other?
+:::
+
+1. Load file
+
+```{python}
+#| label: day-4-load-file
+
+# Load input data
+with open("../data/day-4-input.txt") as f:
+    txt = [line.strip() for line in f]
+```
+
+2. Put in dataframe
+```{python}
+#| label: day-4-create-data-frame
+day4 = pl.DataFrame({
+    "Original": txt
+})
+```
+
+3. Separate into different columns
+```{python}
+#| label: day-4-data-cleaning
+day4_1 = day4.with_columns([
+    #* split original column and call it elf_1
+    pl.col("Original").str.split(",").arr.get(0).alias("Elf_1"),
+    #* split original column and call it elf_2
+    pl.col("Original").str.split(",").arr.get(1).alias("Elf_2")
+]).with_columns([
+    #* take elf_1 and split it 
+    pl.col("Elf_1").str.split("-").alias("Elf_1"),
+    #* take elf_1 and split it
+    pl.col("Elf_2").str.split("-").alias("Elf_2")
+]).with_columns([
+    #* take elf_1
+    pl.col("Elf_1")
+    #* and make elements int
+    .arr.eval(
+        pl.element().cast(pl.Int64())
+    )
+    #* store result as elf_1
+    .alias("Elf_1"),
+    #* take elf_2
+    pl.col("Elf_2")
+    #* and make elements int
+    .arr.eval(
+        pl.element().cast(pl.Int64)
+    )
+    #* store result as elf_2
+    .alias("Elf_2")
+]).with_columns([
+    #* take first element from elf_1 and store to elf_1_1
+    pl.col("Elf_1").arr.get(0).alias("Elf_1_1"),
+    #* take second element from elf_1 and store to elf_1_2
+    pl.col("Elf_1").arr.get(1).alias("Elf_1_2"),
+    #* take first element from elf_2 and store to elf_2_1
+    pl.col("Elf_2").arr.get(0).alias("Elf_2_1"),
+    #* take second element from elf_2 and store to elf_2_2
+    pl.col("Elf_2").arr.get(1).alias("Elf_2_2")
+])
+```
+
+4. Create list of values for each elf
+
+```{python}
+#| label: day-4-each-elf-tasks
+elf_1_1 = day4_1.select([
+    #* convert elf_1_1 to numpy
+    pl.col("Elf_1_1")
+]).to_numpy()
+
+elf_1_2 = day4_1.select([
+    #* convert elf_1_2 to numpy
+    pl.col("Elf_1_2")
+]).to_numpy()
+
+#* Create numpy arrays from each of the section start and stop numbers
+elf_1_range = [np.arange(start = i, stop = j+1) for i,j in zip(elf_1_1, elf_1_2)]
+#* Convert arrays in list to list to make list of list
+elf_1_range = [(i.tolist()) for i in elf_1_range]
+
+elf_2_1 = day4_1.select([
+    #* convert elf_2_1 to numpy
+    pl.col("Elf_2_1")
+]).to_numpy()
+
+elf_2_2 = day4_1.select([
+    #* Convert elf_2_2 to numpy
+    pl.col("Elf_2_2")
+]).to_numpy()
+#* Create numpy arrays from each of the section start and stop numbers
+elf_2_range = [np.arange(start=i, stop=j+1) for i,j in zip(elf_2_1,elf_2_2)]
+#* Convert arrays in list to list to make list of lists
+elf_2_range = [(i.tolist()) for i in elf_2_range]
+```
+
+4. Toss it in columns
+
+```{python}
+#| label: day-4-range-of-tasks
+day4_2 = pl.DataFrame({
+    "Original": txt,
+    "Elf_1_range": elf_1_range,
+    "Elf_2_range": elf_2_range
+})
+```
+
+5. Match the columns
+
+```{python}
+#| label: day-4-match
+day4_3 = day4_2.with_columns([
+    #* take elf_1_range
+    pl.col("Elf_1_range")
+    #* concat elf_2_range to it
+    .arr.concat(pl.col("Elf_2_range"))
+    #* take each element and grab duplicates
+    .arr.eval(pl.element().filter(pl.element().is_duplicated()))
+    #* then take the unique values from that
+    .arr.unique()
+    #* store it in match column
+    .alias("Match")
+])
+```
+
+6. Now see if one is fully encompassed by the other
+```{python}
+#| label: day-4-check-full-encompassing
+day4_4 = day4_3.with_columns([
+    pl.when(
+        #* when length of list elf_1_range is same as Match...
+        pl.col("Elf_1_range").arr.lengths() == pl.col("Match").arr.lengths()
+    )
+    #* then make equal to one
+    .then(1)
+    .when(
+        #* when length of list elf_2_range is same as Match
+        pl.col("Elf_2_range").arr.lengths() == pl.col("Match").arr.lengths()
+    )
+    #* then make equal to one
+    .then(1)
+    #* if neither of conditions, then set to zero
+    .otherwise(0)
+    #* Store the results in Overlap
+    .alias("Overlap")
+])
+```
+
+7. Sum across groups
+
+```{python}
+#| label: day-4-sum-across-groups
+day4_1_ans = day4_4.select(
+    #* take Overlap column
+    pl.col("Overlap")
+).sum() #* sum across
+```
+
+:::{.callout-important appearance="minimal"}
+## Answer
+```{python}
+#| label: display-day-4-1-ans
+print("Day 4, Part 1 Answer: " + str(day4_1_ans[0,0]))
+```
+:::
+
+## Part 2
+
+:::{.callout-important appearance="minimal"}
+## Problem
+It seems like there is still quite a bit of duplicate work planned. Instead, the Elves would like to know the number of pairs that overlap at all.
+
+In the above example, the first two pairs (2-4,6-8 and 2-3,4-5) don't overlap, while the remaining four pairs (5-7,7-9, 2-8,3-7, 6-6,4-6, and 2-6,4-8) do overlap:
+
+5-7,7-9 overlaps in a single section, 7.
+2-8,3-7 overlaps all of the sections 3 through 7.
+6-6,4-6 overlaps in a single section, 6.
+2-6,4-8 overlaps in sections 4, 5, and 6.
+So, in this example, the number of overlapping assignment pairs is 4.
+
+In how many assignment pairs do the ranges overlap?
+:::
+
+1. Take the dataframe from the previous part and find any non-empty list object in Match column
+
+```{python}
+#| label: day-4-overlap
+day4_5 = day4_3.with_columns([
+    pl.when(
+        #* If the length of list in Match column is not empty
+        pl.col("Match").arr.lengths() != 0
+    )
+    #* then set equal to 1
+    .then(1)
+    #* otherwise set equal to 0
+    .otherwise(0)
+    #* Store result in Overlap
+    .alias("Overlap")
+])
+```
+
+2. Sum over the Overlap column to find groups with any overlap
+```{python}
+#| label: day-4-sum-across
+day4_2_ans = day4_5.select(
+    #* Take overlap column
+    pl.col("Overlap")
+).sum() #* Sum across
+```
+
+:::{.callout-important appearance="minimal"}
+## Answer
+```{python}
+#| label: display-day-4-2-ans
+print("Day 4, Part 2 Answer: " + str(day4_2_ans[0,0]))
+```
+:::
 <!--
     END OF DOCUMENT
 -->
