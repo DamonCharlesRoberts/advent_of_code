@@ -2567,7 +2567,7 @@ vertical-align: -.125em;
 </section>
 <section id="importing-packages" class="level1">
 <h1>Importing packages</h1>
-<div id="module-import" class="cell" data-execution_count="1">
+<div id="module-import" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb <span class="co"># for database management</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># for array management</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl <span class="co"># for data munging</span></span>
@@ -2579,7 +2579,7 @@ vertical-align: -.125em;
 </section>
 <section id="set-up-a-duckdb-database-for-the-data-in-these-problems." class="level1">
 <h1>Set up a duckdb database for the data in these problems.</h1>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create database</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> duckdb.<span class="ex">connect</span>(<span class="st">&quot;../data/aoc_2022_db&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2623,7 +2623,7 @@ Problem
 <ol type="1">
 <li>Enter the data into a database:</li>
 </ol>
-<div id="day-1-1_dataframe" class="cell" data-execution_count="3">
+<div id="day-1-1_dataframe" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load input data</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Open the txt file and enter the lines into a list object</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;../data/day-1-1-input.txt&quot;</span>) <span class="im">as</span> f:</span>
@@ -2642,7 +2642,7 @@ Problem
 <ol start="2" type="1">
 <li>Now groupby elf and see which one has most:</li>
 </ol>
-<div id="day-1-1-database-count" class="cell" data-execution_count="4">
+<div id="day-1-1-database-count" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>day1_2 <span class="op">=</span> day1.with_column(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Calories&quot;</span>).arr.<span class="bu">eval</span>(pl.element()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">sum</span>()).alias(<span class="st">&quot;Total&quot;</span>) <span class="co"># take each element in the list for the Calories column, and sum it, then put that in a Total column</span></span>
@@ -2655,7 +2655,7 @@ Problem
 <ol start="3" type="1">
 <li>Filter for the highest</li>
 </ol>
-<div id="day-1-1-filter" class="cell" data-execution_count="5">
+<div id="day-1-1-filter" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>day1_2_filtered <span class="op">=</span> day1_2.<span class="bu">filter</span>( <span class="co"># filter from day1_2 </span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">&quot;Total&quot;</span>) <span class="op">==</span> pl.col(<span class="st">&quot;Total&quot;</span>).<span class="bu">max</span>() <span class="co"># find the maximum element in Total column</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2670,7 +2670,7 @@ Part 1 Answer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="display-day-1-1-answer" class="cell" data-execution_count="6">
+<div id="display-day-1-1-answer" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print answer</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 1, Part 1 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day1_2_filtered.select(<span class="st">&quot;Total&quot;</span>)[<span class="dv">0</span>,<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2701,7 +2701,7 @@ Problem
 <ol type="1">
 <li>Get three elves with most calories</li>
 </ol>
-<div id="day1-select-top-3" class="cell" data-execution_count="7">
+<div id="day1-select-top-3" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>day1_3 <span class="op">=</span> day1_2.select( <span class="co"># select from day1_2</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Total&quot;</span>).top_k(k <span class="op">=</span> <span class="dv">3</span>) <span class="co"># take the rows with the highest three Total</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2709,13 +2709,13 @@ Problem
 <ol start="3" type="1">
 <li>Sum the top three</li>
 </ol>
-<div id="day1-sum" class="cell" data-execution_count="8">
+<div id="day1-sum" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>day1_3_ans <span class="op">=</span> day1_3.<span class="bu">sum</span>() <span class="co"># print the sum of the top 3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
 <li>Store the dataframe into the database</li>
 </ol>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert day12 to pyarrow</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>day1_4 <span class="op">=</span> day1_2.to_arrow()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Store dataframe as table</span></span>
@@ -2736,7 +2736,7 @@ Part 2 Answer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="display-day-1-2-answer" class="cell" data-execution_count="10">
+<div id="display-day-1-2-answer" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 1, Part 2 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day1_3_ans.select(<span class="st">&quot;Total&quot;</span>)[<span class="dv">0</span>,<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Day 1, Part 2 Answer: 197400</code></pre>
@@ -2778,14 +2778,14 @@ Problem
 <ol type="1">
 <li>Read input data</li>
 </ol>
-<div id="day-2-load" class="cell" data-execution_count="11">
+<div id="day-2-load" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Open the csv file and enter the lines into a dataframe</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>day2_1 <span class="op">=</span> pl.read_csv(<span class="st">&quot;../data/day-2-input.csv&quot;</span>, has_header <span class="op">=</span> <span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>Split column</li>
 </ol>
-<div id="day-2-split-column" class="cell" data-execution_count="12">
+<div id="day-2-split-column" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>day2_2 <span class="op">=</span> day2_1.select([ <span class="co"># select multiple columns</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">&quot;column_1&quot;</span>).<span class="bu">str</span>.split(<span class="st">&quot; &quot;</span>).arr.get(<span class="dv">0</span>).alias(<span class="st">&quot;Opponent&quot;</span>), <span class="co"># grab column_1, split the string, grab the first element, and put it in the Opponent column</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">&quot;column_1&quot;</span>).<span class="bu">str</span>.split(<span class="st">&quot; &quot;</span>).arr.get(<span class="dv">1</span>).alias(<span class="st">&quot;Me&quot;</span>) <span class="co"># grab column_1, split the string, grab the second element, and put it in the Me column</span></span>
@@ -2794,7 +2794,7 @@ Problem
 <ol start="3" type="1">
 <li>Determine outcomes</li>
 </ol>
-<div id="day-2-quantify" class="cell" data-execution_count="13">
+<div id="day-2-quantify" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>day2_3 <span class="op">=</span> day2_2.with_columns(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    pl.when(</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Opponent = Rock; Me = Paper</span></span>
@@ -2838,7 +2838,7 @@ Problem
 <ol start="4" type="1">
 <li>Calculate my score</li>
 </ol>
-<div id="day-2-score" class="cell" data-execution_count="14">
+<div id="day-2-score" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>day2_4 <span class="op">=</span> day2_3.with_columns(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    pl.when(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">&quot;Me&quot;</span>).<span class="bu">str</span>.contains(<span class="st">&quot;Y&quot;</span>) <span class="co"># If I used paper...</span></span>
@@ -2864,7 +2864,7 @@ Problem
 <ol start="5" type="1">
 <li>Calculate total score</li>
 </ol>
-<div id="day-2-1-score" class="cell" data-execution_count="15">
+<div id="day-2-1-score" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> day2_4.select(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Score&quot;</span>) <span class="co"># grab my score column</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>).<span class="bu">sum</span>() <span class="co"># take sum of rows in column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2879,7 +2879,7 @@ Answer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="display-2-1-answer" class="cell" data-execution_count="16">
+<div id="display-2-1-answer" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 2, Part 1 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(score.select(<span class="st">&quot;Score&quot;</span>)[<span class="dv">0</span>,<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Day 2, Part 1 Answer: 15523</code></pre>
@@ -2909,7 +2909,7 @@ Problem
 <ol type="1">
 <li>Take the dataframe I had at the start after split and redefine what the strategies mean</li>
 </ol>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>day2_5 <span class="op">=</span> day2_2.with_columns(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    pl.when(</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Need to Draw</span></span>
@@ -2932,7 +2932,7 @@ Problem
 <ol start="2" type="1">
 <li>Calculate the score</li>
 </ol>
-<div id="day2-2-score" class="cell" data-execution_count="18">
+<div id="day2-2-score" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>day2_6 <span class="op">=</span> day2_5.with_column(</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    pl.when(</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Opponent = Rock; Me = Paper</span></span>
@@ -3003,7 +3003,7 @@ Problem
 <ol start="3" type="1">
 <li>Calculate total score</li>
 </ol>
-<div id="day-2-2-score" class="cell" data-execution_count="19">
+<div id="day-2-2-score" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>score2 <span class="op">=</span> day2_6.select(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Score&quot;</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>).<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3011,7 +3011,7 @@ Problem
 <ol start="6" type="1">
 <li>Store dataframe in database</li>
 </ol>
-<div class="cell" data-execution_count="20">
+<div class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert dataframe to arrow</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>day_2_7 <span class="op">=</span> day2_2.to_arrow()</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3033,7 +3033,7 @@ Answer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="display-day-2-2-answer" class="cell" data-execution_count="21">
+<div id="display-day-2-2-answer" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 2, Part 2 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(score2.select(<span class="st">&quot;Score&quot;</span>)[<span class="dv">0</span>,<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Day 2, Part 2 Answer: 15702</code></pre>
@@ -3076,12 +3076,12 @@ Problem
 <ol type="1">
 <li>Load the input data</li>
 </ol>
-<div id="day-3-input-load" class="cell" data-execution_count="22">
+<div id="day-3-input-load" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load input data</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;../data/day-3-input.txt&quot;</span>) <span class="im">as</span> f:</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    txt <span class="op">=</span> [line.strip() <span class="cf">for</span> line <span class="kw">in</span> f]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="day3-1-divide-original" class="cell" data-execution_count="23">
+<div id="day3-1-divide-original" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#* Take the length of each element and divide it by 2</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>Compartment_1 <span class="op">=</span> [i[<span class="dv">0</span>:<span class="bu">len</span>(i)<span class="op">//</span><span class="dv">2</span>] <span class="cf">for</span> i <span class="kw">in</span> txt]</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>Compartment_2 <span class="op">=</span> [i[<span class="bu">len</span>(i)<span class="op">//</span><span class="dv">2</span>:] <span class="cf">for</span> i <span class="kw">in</span> txt]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3089,11 +3089,14 @@ Problem
 <ol start="3" type="1">
 <li>Make each character its own string</li>
 </ol>
-<div id="day3-1-character-per-string" class="cell" data-execution_count="24">
+<div id="day3-1-character-per-string" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Compartment_1_str <span class="op">=</span> [<span class="bu">list</span>(e) <span class="cf">for</span> e <span class="kw">in</span> Compartment_1]</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>Compartment_2_str <span class="op">=</span> [<span class="bu">list</span>(e) <span class="cf">for</span> e <span class="kw">in</span> Compartment_2]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="25">
+<ol start="4" type="1">
+<li>Toss it all into a dataframe</li>
+</ol>
+<div class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#* lable: day3-1-dataframe</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Toss it all into a dataframe</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>day3_1 <span class="op">=</span> pl.DataFrame({</span>
@@ -3109,7 +3112,10 @@ Problem
 <span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Compartment_2&quot;</span>: [[(<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">38</span>) <span class="cf">if</span> i.isupper() <span class="cf">else</span> (<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">96</span>) <span class="cf">for</span> i <span class="kw">in</span> j] <span class="cf">for</span> j <span class="kw">in</span> Compartment_2_str],</span>
 <span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="26">
+<ol start="5" type="1">
+<li>Find the items in common between compartment</li>
+</ol>
+<div class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>day3_2 <span class="op">=</span> day3_1.with_columns([</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_1</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
@@ -3136,7 +3142,10 @@ Problem
 <span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match&quot;</span>)</span>
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="27">
+<ol start="6" type="1">
+<li>Sum across priority values for each elf</li>
+</ol>
+<div class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>day3_3 <span class="op">=</span> day3_2.with_column(</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Match</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match&quot;</span>)</span>
@@ -3148,7 +3157,10 @@ Problem
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Sum&quot;</span>)</span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="28">
+<ol start="7" type="1">
+<li>Sum across summed-priority values for the elves</li>
+</ol>
+<div class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>day3_1_ans <span class="op">=</span> day3_3.select(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the sum for each elf</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Sum&quot;</span>)</span>
@@ -3164,7 +3176,7 @@ Answer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="cell" data-execution_count="29">
+<div class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 3, Part 1 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day3_1_ans[<span class="dv">0</span>,<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Day 3, Part 1 Answer: 8176</code></pre>
@@ -3199,7 +3211,7 @@ Problem
 <ol type="1">
 <li>Create Group ID, and convert columns to Utf</li>
 </ol>
-<div id="day3-create-group-id" class="cell" data-execution_count="30">
+<div id="day3-create-group-id" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>day3_4 <span class="op">=</span> day3_1.with_columns([</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take the original column...</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Original&quot;</span>),</span>
@@ -3230,7 +3242,7 @@ Problem
 <ol start="2" type="1">
 <li>Concat the two columns to create a full list</li>
 </ol>
-<div id="day3-2-concat-columns" class="cell" data-execution_count="31">
+<div id="day3-2-concat-columns" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>day3_5 <span class="op">=</span> day3_4.with_columns([</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_1 Column</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
@@ -3243,7 +3255,7 @@ Problem
 <ol start="3" type="1">
 <li>Group-by the three elves in a group on their full list</li>
 </ol>
-<div id="day3-2-group-by" class="cell" data-execution_count="32">
+<div id="day3-2-group-by" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>day3_6 <span class="op">=</span> (</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    day3_5</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Group the day3_5 dataframe by Group_ID column</span></span>
@@ -3258,7 +3270,7 @@ Problem
 <ol start="4" type="1">
 <li>Slice the full list for the elves into three distinct column. One for each elf.</li>
 </ol>
-<div id="day3-2-column-per-member" class="cell" data-execution_count="33">
+<div id="day3-2-column-per-member" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>day3_7 <span class="op">=</span> day3_6.with_columns([</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
@@ -3283,7 +3295,7 @@ Problem
 <ol start="5" type="1">
 <li>Split the list for each elf</li>
 </ol>
-<div id="day3-2-split-the-elf-list" class="cell" data-execution_count="34">
+<div id="day3-2-split-the-elf-list" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>day3_8 <span class="op">=</span> day3_7.with_columns([</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1 column</span></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
@@ -3308,7 +3320,7 @@ Problem
 <ol start="6" type="1">
 <li>Convert the list for each elf back into an integer</li>
 </ol>
-<div id="day3-2-convert-elf-list-to-int" class="cell" data-execution_count="35">
+<div id="day3-2-convert-elf-list-to-int" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>day3_9 <span class="op">=</span> day3_8.with_columns([</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1 column</span></span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
@@ -3339,7 +3351,7 @@ Problem
 <ol start="7" type="1">
 <li>Find the unique values between the three columns, then keep the ones that are unique</li>
 </ol>
-<div id="day3-2-unique-value-hunting" class="cell" data-execution_count="36">
+<div id="day3-2-unique-value-hunting" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>day3_10 <span class="op">=</span> day3_9.with_columns([</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the member_1 column</span></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
@@ -3386,7 +3398,7 @@ Problem
 <ol start="8" type="1">
 <li>Sum across the priority values remaining</li>
 </ol>
-<div id="day3-2-sum-within-group" class="cell" data-execution_count="37">
+<div id="day3-2-sum-within-group" class="cell" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>day3_11 <span class="op">=</span> day3_10.with_column(</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the match column</span></span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match&quot;</span>)</span>
@@ -3401,7 +3413,7 @@ Problem
 <ol start="9" type="1">
 <li>Sum across all the groups</li>
 </ol>
-<div id="day3-2-sum-between-group" class="cell" data-execution_count="38">
+<div id="day3-2-sum-between-group" class="cell" data-execution_count="39">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>day3_2_ans <span class="op">=</span> day3_11.select(</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Sum column</span></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Sum&quot;</span>)</span>
@@ -3417,7 +3429,7 @@ Answer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="display-3-2-answer" class="cell" data-execution_count="39">
+<div id="display-3-2-answer" class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 3, Part 2 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day3_2_ans[<span class="dv">0</span>,<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Day 3, Part 2 Answer: 2689</code></pre>
@@ -4166,334 +4178,338 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb48-627"><a href="#cb48-627" aria-hidden="true" tabindex="-1"></a>Compartment_2_str <span class="op">=</span> [<span class="bu">list</span>(e) <span class="cf">for</span> e <span class="kw">in</span> Compartment_2]</span>
 <span id="cb48-628"><a href="#cb48-628" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb48-629"><a href="#cb48-629" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-630"><a href="#cb48-630" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-633"><a href="#cb48-633" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-634"><a href="#cb48-634" aria-hidden="true" tabindex="-1"></a><span class="co">#* lable: day3-1-dataframe</span></span>
-<span id="cb48-635"><a href="#cb48-635" aria-hidden="true" tabindex="-1"></a><span class="co"># Toss it all into a dataframe</span></span>
-<span id="cb48-636"><a href="#cb48-636" aria-hidden="true" tabindex="-1"></a>day3_1 <span class="op">=</span> pl.DataFrame({</span>
-<span id="cb48-637"><a href="#cb48-637" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take the txt object and store it in column Original</span></span>
-<span id="cb48-638"><a href="#cb48-638" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Original&quot;</span>: txt,</span>
-<span id="cb48-639"><a href="#cb48-639" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take Compartment_1_str object</span></span>
-<span id="cb48-640"><a href="#cb48-640" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to ascii numbers - rules from game</span></span>
-<span id="cb48-641"><a href="#cb48-641" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it in Compartment_1</span></span>
-<span id="cb48-642"><a href="#cb48-642" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Compartment_1&quot;</span>: [[(<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">38</span>) <span class="cf">if</span> i.isupper() <span class="cf">else</span> (<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">96</span>) <span class="cf">for</span> i <span class="kw">in</span> j] <span class="cf">for</span> j <span class="kw">in</span> Compartment_1_str],</span>
-<span id="cb48-643"><a href="#cb48-643" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take Compartment_2_str object</span></span>
-<span id="cb48-644"><a href="#cb48-644" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to ascii numbers - rules from game</span></span>
-<span id="cb48-645"><a href="#cb48-645" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it in Compartment_2</span></span>
-<span id="cb48-646"><a href="#cb48-646" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Compartment_2&quot;</span>: [[(<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">38</span>) <span class="cf">if</span> i.isupper() <span class="cf">else</span> (<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">96</span>) <span class="cf">for</span> i <span class="kw">in</span> j] <span class="cf">for</span> j <span class="kw">in</span> Compartment_2_str],</span>
-<span id="cb48-647"><a href="#cb48-647" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb48-648"><a href="#cb48-648" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-649"><a href="#cb48-649" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-652"><a href="#cb48-652" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-653"><a href="#cb48-653" aria-hidden="true" tabindex="-1"></a>day3_2 <span class="op">=</span> day3_1.with_columns([</span>
-<span id="cb48-654"><a href="#cb48-654" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_1</span></span>
-<span id="cb48-655"><a href="#cb48-655" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
-<span id="cb48-656"><a href="#cb48-656" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find unique values</span></span>
-<span id="cb48-657"><a href="#cb48-657" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-658"><a href="#cb48-658" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store unique values in Compartment_1_uniq</span></span>
-<span id="cb48-659"><a href="#cb48-659" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_1_uniq&quot;</span>),</span>
-<span id="cb48-660"><a href="#cb48-660" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_2</span></span>
-<span id="cb48-661"><a href="#cb48-661" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_2&quot;</span>)</span>
-<span id="cb48-662"><a href="#cb48-662" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find unique values</span></span>
-<span id="cb48-663"><a href="#cb48-663" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-664"><a href="#cb48-664" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it in Compartment_2_uniq</span></span>
-<span id="cb48-665"><a href="#cb48-665" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_2_uniq&quot;</span>)</span>
-<span id="cb48-666"><a href="#cb48-666" aria-hidden="true" tabindex="-1"></a>]).with_columns(</span>
-<span id="cb48-667"><a href="#cb48-667" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_1_uniq</span></span>
-<span id="cb48-668"><a href="#cb48-668" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1_uniq&quot;</span>)</span>
-<span id="cb48-669"><a href="#cb48-669" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Concat Compartment_2_uniq to it</span></span>
-<span id="cb48-670"><a href="#cb48-670" aria-hidden="true" tabindex="-1"></a>    .arr.concat(pl.col(<span class="st">&quot;Compartment_2_uniq&quot;</span>))</span>
-<span id="cb48-671"><a href="#cb48-671" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find elements that are duplicated between them</span></span>
-<span id="cb48-672"><a href="#cb48-672" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">filter</span>(pl.element().is_duplicated()))</span>
-<span id="cb48-673"><a href="#cb48-673" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find unique values remaining</span></span>
-<span id="cb48-674"><a href="#cb48-674" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-675"><a href="#cb48-675" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store result in Match</span></span>
-<span id="cb48-676"><a href="#cb48-676" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match&quot;</span>)</span>
-<span id="cb48-677"><a href="#cb48-677" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-678"><a href="#cb48-678" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-679"><a href="#cb48-679" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-682"><a href="#cb48-682" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-683"><a href="#cb48-683" aria-hidden="true" tabindex="-1"></a>day3_3 <span class="op">=</span> day3_2.with_column(</span>
-<span id="cb48-684"><a href="#cb48-684" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Match</span></span>
-<span id="cb48-685"><a href="#cb48-685" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match&quot;</span>)</span>
-<span id="cb48-686"><a href="#cb48-686" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Sum elements in row</span></span>
-<span id="cb48-687"><a href="#cb48-687" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">sum</span>())</span>
-<span id="cb48-688"><a href="#cb48-688" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the result</span></span>
-<span id="cb48-689"><a href="#cb48-689" aria-hidden="true" tabindex="-1"></a>    .arr.get(<span class="dv">0</span>)</span>
-<span id="cb48-690"><a href="#cb48-690" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store result in Sum</span></span>
-<span id="cb48-691"><a href="#cb48-691" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Sum&quot;</span>)</span>
-<span id="cb48-692"><a href="#cb48-692" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-693"><a href="#cb48-693" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-694"><a href="#cb48-694" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-697"><a href="#cb48-697" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-698"><a href="#cb48-698" aria-hidden="true" tabindex="-1"></a>day3_1_ans <span class="op">=</span> day3_3.select(</span>
-<span id="cb48-699"><a href="#cb48-699" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the sum for each elf</span></span>
-<span id="cb48-700"><a href="#cb48-700" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Sum&quot;</span>)</span>
-<span id="cb48-701"><a href="#cb48-701" aria-hidden="true" tabindex="-1"></a>).<span class="bu">sum</span>() <span class="co">#* and sum across elves</span></span>
-<span id="cb48-702"><a href="#cb48-702" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-703"><a href="#cb48-703" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-704"><a href="#cb48-704" aria-hidden="true" tabindex="-1"></a>:::{.callout-important appearance=&quot;minimal&quot;}</span>
-<span id="cb48-705"><a href="#cb48-705" aria-hidden="true" tabindex="-1"></a><span class="fu">## Answer</span></span>
-<span id="cb48-708"><a href="#cb48-708" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-709"><a href="#cb48-709" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 3, Part 1 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day3_1_ans[<span class="dv">0</span>,<span class="dv">0</span>]))</span>
-<span id="cb48-710"><a href="#cb48-710" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-711"><a href="#cb48-711" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb48-712"><a href="#cb48-712" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-713"><a href="#cb48-713" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
-<span id="cb48-714"><a href="#cb48-714" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-715"><a href="#cb48-715" aria-hidden="true" tabindex="-1"></a>:::{.callout-important appearance=&quot;minimal&quot;}</span>
-<span id="cb48-716"><a href="#cb48-716" aria-hidden="true" tabindex="-1"></a><span class="fu">## Problem</span></span>
-<span id="cb48-717"><a href="#cb48-717" aria-hidden="true" tabindex="-1"></a>As you finish identifying the misplaced items, the Elves come to you with another issue.</span>
+<span id="cb48-630"><a href="#cb48-630" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Toss it all into a dataframe</span>
+<span id="cb48-631"><a href="#cb48-631" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-634"><a href="#cb48-634" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-635"><a href="#cb48-635" aria-hidden="true" tabindex="-1"></a><span class="co">#* lable: day3-1-dataframe</span></span>
+<span id="cb48-636"><a href="#cb48-636" aria-hidden="true" tabindex="-1"></a><span class="co"># Toss it all into a dataframe</span></span>
+<span id="cb48-637"><a href="#cb48-637" aria-hidden="true" tabindex="-1"></a>day3_1 <span class="op">=</span> pl.DataFrame({</span>
+<span id="cb48-638"><a href="#cb48-638" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take the txt object and store it in column Original</span></span>
+<span id="cb48-639"><a href="#cb48-639" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Original&quot;</span>: txt,</span>
+<span id="cb48-640"><a href="#cb48-640" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take Compartment_1_str object</span></span>
+<span id="cb48-641"><a href="#cb48-641" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to ascii numbers - rules from game</span></span>
+<span id="cb48-642"><a href="#cb48-642" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it in Compartment_1</span></span>
+<span id="cb48-643"><a href="#cb48-643" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Compartment_1&quot;</span>: [[(<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">38</span>) <span class="cf">if</span> i.isupper() <span class="cf">else</span> (<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">96</span>) <span class="cf">for</span> i <span class="kw">in</span> j] <span class="cf">for</span> j <span class="kw">in</span> Compartment_1_str],</span>
+<span id="cb48-644"><a href="#cb48-644" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take Compartment_2_str object</span></span>
+<span id="cb48-645"><a href="#cb48-645" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to ascii numbers - rules from game</span></span>
+<span id="cb48-646"><a href="#cb48-646" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it in Compartment_2</span></span>
+<span id="cb48-647"><a href="#cb48-647" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Compartment_2&quot;</span>: [[(<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">38</span>) <span class="cf">if</span> i.isupper() <span class="cf">else</span> (<span class="bu">ord</span>(i)<span class="op">-</span><span class="dv">96</span>) <span class="cf">for</span> i <span class="kw">in</span> j] <span class="cf">for</span> j <span class="kw">in</span> Compartment_2_str],</span>
+<span id="cb48-648"><a href="#cb48-648" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb48-649"><a href="#cb48-649" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-650"><a href="#cb48-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-651"><a href="#cb48-651" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Find the items in common between compartment</span>
+<span id="cb48-654"><a href="#cb48-654" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-655"><a href="#cb48-655" aria-hidden="true" tabindex="-1"></a>day3_2 <span class="op">=</span> day3_1.with_columns([</span>
+<span id="cb48-656"><a href="#cb48-656" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_1</span></span>
+<span id="cb48-657"><a href="#cb48-657" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
+<span id="cb48-658"><a href="#cb48-658" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find unique values</span></span>
+<span id="cb48-659"><a href="#cb48-659" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-660"><a href="#cb48-660" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store unique values in Compartment_1_uniq</span></span>
+<span id="cb48-661"><a href="#cb48-661" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_1_uniq&quot;</span>),</span>
+<span id="cb48-662"><a href="#cb48-662" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_2</span></span>
+<span id="cb48-663"><a href="#cb48-663" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_2&quot;</span>)</span>
+<span id="cb48-664"><a href="#cb48-664" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find unique values</span></span>
+<span id="cb48-665"><a href="#cb48-665" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-666"><a href="#cb48-666" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it in Compartment_2_uniq</span></span>
+<span id="cb48-667"><a href="#cb48-667" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_2_uniq&quot;</span>)</span>
+<span id="cb48-668"><a href="#cb48-668" aria-hidden="true" tabindex="-1"></a>]).with_columns(</span>
+<span id="cb48-669"><a href="#cb48-669" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Compartment_1_uniq</span></span>
+<span id="cb48-670"><a href="#cb48-670" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1_uniq&quot;</span>)</span>
+<span id="cb48-671"><a href="#cb48-671" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Concat Compartment_2_uniq to it</span></span>
+<span id="cb48-672"><a href="#cb48-672" aria-hidden="true" tabindex="-1"></a>    .arr.concat(pl.col(<span class="st">&quot;Compartment_2_uniq&quot;</span>))</span>
+<span id="cb48-673"><a href="#cb48-673" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find elements that are duplicated between them</span></span>
+<span id="cb48-674"><a href="#cb48-674" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">filter</span>(pl.element().is_duplicated()))</span>
+<span id="cb48-675"><a href="#cb48-675" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Find unique values remaining</span></span>
+<span id="cb48-676"><a href="#cb48-676" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-677"><a href="#cb48-677" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store result in Match</span></span>
+<span id="cb48-678"><a href="#cb48-678" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match&quot;</span>)</span>
+<span id="cb48-679"><a href="#cb48-679" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-680"><a href="#cb48-680" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-681"><a href="#cb48-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-682"><a href="#cb48-682" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Sum across priority values for each elf</span>
+<span id="cb48-685"><a href="#cb48-685" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-686"><a href="#cb48-686" aria-hidden="true" tabindex="-1"></a>day3_3 <span class="op">=</span> day3_2.with_column(</span>
+<span id="cb48-687"><a href="#cb48-687" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Match</span></span>
+<span id="cb48-688"><a href="#cb48-688" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match&quot;</span>)</span>
+<span id="cb48-689"><a href="#cb48-689" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Sum elements in row</span></span>
+<span id="cb48-690"><a href="#cb48-690" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">sum</span>())</span>
+<span id="cb48-691"><a href="#cb48-691" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the result</span></span>
+<span id="cb48-692"><a href="#cb48-692" aria-hidden="true" tabindex="-1"></a>    .arr.get(<span class="dv">0</span>)</span>
+<span id="cb48-693"><a href="#cb48-693" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store result in Sum</span></span>
+<span id="cb48-694"><a href="#cb48-694" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Sum&quot;</span>)</span>
+<span id="cb48-695"><a href="#cb48-695" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-696"><a href="#cb48-696" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-697"><a href="#cb48-697" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-698"><a href="#cb48-698" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Sum across summed-priority values for the elves</span>
+<span id="cb48-701"><a href="#cb48-701" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-702"><a href="#cb48-702" aria-hidden="true" tabindex="-1"></a>day3_1_ans <span class="op">=</span> day3_3.select(</span>
+<span id="cb48-703"><a href="#cb48-703" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the sum for each elf</span></span>
+<span id="cb48-704"><a href="#cb48-704" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Sum&quot;</span>)</span>
+<span id="cb48-705"><a href="#cb48-705" aria-hidden="true" tabindex="-1"></a>).<span class="bu">sum</span>() <span class="co">#* and sum across elves</span></span>
+<span id="cb48-706"><a href="#cb48-706" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-707"><a href="#cb48-707" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-708"><a href="#cb48-708" aria-hidden="true" tabindex="-1"></a>:::{.callout-important appearance=&quot;minimal&quot;}</span>
+<span id="cb48-709"><a href="#cb48-709" aria-hidden="true" tabindex="-1"></a><span class="fu">## Answer</span></span>
+<span id="cb48-712"><a href="#cb48-712" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-713"><a href="#cb48-713" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 3, Part 1 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day3_1_ans[<span class="dv">0</span>,<span class="dv">0</span>]))</span>
+<span id="cb48-714"><a href="#cb48-714" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-715"><a href="#cb48-715" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb48-716"><a href="#cb48-716" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-717"><a href="#cb48-717" aria-hidden="true" tabindex="-1"></a><span class="fu">## Part 2</span></span>
 <span id="cb48-718"><a href="#cb48-718" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-719"><a href="#cb48-719" aria-hidden="true" tabindex="-1"></a>For safety, the Elves are divided into groups of three. Every Elf carries a badge that identifies their group. For efficiency, within each group of three Elves, the badge is the only item type carried by all three Elves. That is, if a group&#39;s badge is item type B, then all three Elves will have item type B somewhere in their rucksack, and at most two of the Elves will be carrying any other item type.</span>
-<span id="cb48-720"><a href="#cb48-720" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-721"><a href="#cb48-721" aria-hidden="true" tabindex="-1"></a>The problem is that someone forgot to put this year&#39;s updated authenticity sticker on the badges. All of the badges need to be pulled out of the rucksacks so the new authenticity stickers can be attached.</span>
+<span id="cb48-719"><a href="#cb48-719" aria-hidden="true" tabindex="-1"></a>:::{.callout-important appearance=&quot;minimal&quot;}</span>
+<span id="cb48-720"><a href="#cb48-720" aria-hidden="true" tabindex="-1"></a><span class="fu">## Problem</span></span>
+<span id="cb48-721"><a href="#cb48-721" aria-hidden="true" tabindex="-1"></a>As you finish identifying the misplaced items, the Elves come to you with another issue.</span>
 <span id="cb48-722"><a href="#cb48-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-723"><a href="#cb48-723" aria-hidden="true" tabindex="-1"></a>Additionally, nobody wrote down which item type corresponds to each group&#39;s badges. The only way to tell which item type is the right one is by finding the one item type that is common between all three Elves in each group.</span>
+<span id="cb48-723"><a href="#cb48-723" aria-hidden="true" tabindex="-1"></a>For safety, the Elves are divided into groups of three. Every Elf carries a badge that identifies their group. For efficiency, within each group of three Elves, the badge is the only item type carried by all three Elves. That is, if a group&#39;s badge is item type B, then all three Elves will have item type B somewhere in their rucksack, and at most two of the Elves will be carrying any other item type.</span>
 <span id="cb48-724"><a href="#cb48-724" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-725"><a href="#cb48-725" aria-hidden="true" tabindex="-1"></a>Every set of three lines in your list corresponds to a single group, but each group can have a different badge item type. So, in the above example, the first group&#39;s rucksacks are the first three lines:</span>
+<span id="cb48-725"><a href="#cb48-725" aria-hidden="true" tabindex="-1"></a>The problem is that someone forgot to put this year&#39;s updated authenticity sticker on the badges. All of the badges need to be pulled out of the rucksacks so the new authenticity stickers can be attached.</span>
 <span id="cb48-726"><a href="#cb48-726" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-727"><a href="#cb48-727" aria-hidden="true" tabindex="-1"></a>vJrwpWtwJgWrhcsFMMfFFhFp</span>
-<span id="cb48-728"><a href="#cb48-728" aria-hidden="true" tabindex="-1"></a>jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL</span>
-<span id="cb48-729"><a href="#cb48-729" aria-hidden="true" tabindex="-1"></a>PmmdzqPrVvPwwTWBwg</span>
-<span id="cb48-730"><a href="#cb48-730" aria-hidden="true" tabindex="-1"></a>And the second group&#39;s rucksacks are the next three lines:</span>
-<span id="cb48-731"><a href="#cb48-731" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-732"><a href="#cb48-732" aria-hidden="true" tabindex="-1"></a>wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn</span>
-<span id="cb48-733"><a href="#cb48-733" aria-hidden="true" tabindex="-1"></a>ttgJtRGJQctTZtZT</span>
-<span id="cb48-734"><a href="#cb48-734" aria-hidden="true" tabindex="-1"></a>CrZsJsPPZsGzwwsLwLmpwMDw</span>
-<span id="cb48-735"><a href="#cb48-735" aria-hidden="true" tabindex="-1"></a>In the first group, the only item type that appears in all three rucksacks is lowercase r; this must be their badges. In the second group, their badge item type must be Z.</span>
-<span id="cb48-736"><a href="#cb48-736" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-737"><a href="#cb48-737" aria-hidden="true" tabindex="-1"></a>Priorities for these items must still be found to organize the sticker attachment efforts: here, they are 18 (r) for the first group and 52 (Z) for the second group. The sum of these is 70.</span>
-<span id="cb48-738"><a href="#cb48-738" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-739"><a href="#cb48-739" aria-hidden="true" tabindex="-1"></a>Find the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?</span>
-<span id="cb48-740"><a href="#cb48-740" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb48-741"><a href="#cb48-741" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-742"><a href="#cb48-742" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Create Group ID, and convert columns to Utf</span>
-<span id="cb48-745"><a href="#cb48-745" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-746"><a href="#cb48-746" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-create-group-id</span></span>
-<span id="cb48-747"><a href="#cb48-747" aria-hidden="true" tabindex="-1"></a>day3_4 <span class="op">=</span> day3_1.with_columns([</span>
-<span id="cb48-748"><a href="#cb48-748" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take the original column...</span></span>
-<span id="cb48-749"><a href="#cb48-749" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Original&quot;</span>),</span>
-<span id="cb48-750"><a href="#cb48-750" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* add a new column of the same length...</span></span>
-<span id="cb48-751"><a href="#cb48-751" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* repeating values every 3 rows</span></span>
-<span id="cb48-752"><a href="#cb48-752" aria-hidden="true" tabindex="-1"></a>    pl.Series(np.repeat(np.arange(<span class="dv">100</span>), <span class="dv">3</span>))</span>
-<span id="cb48-753"><a href="#cb48-753" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* store it as Group_ID</span></span>
-<span id="cb48-754"><a href="#cb48-754" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Group_ID&quot;</span>)</span>
-<span id="cb48-755"><a href="#cb48-755" aria-hidden="true" tabindex="-1"></a>]).with_columns([</span>
-<span id="cb48-756"><a href="#cb48-756" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_1 column</span></span>
-<span id="cb48-757"><a href="#cb48-757" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
-<span id="cb48-758"><a href="#cb48-758" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to str</span></span>
-<span id="cb48-759"><a href="#cb48-759" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
-<span id="cb48-760"><a href="#cb48-760" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Utf8())</span>
-<span id="cb48-761"><a href="#cb48-761" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb48-762"><a href="#cb48-762" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it as Compartment_1</span></span>
-<span id="cb48-763"><a href="#cb48-763" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_1&quot;</span>),</span>
-<span id="cb48-764"><a href="#cb48-764" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_2 column</span></span>
-<span id="cb48-765"><a href="#cb48-765" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_2&quot;</span>)</span>
-<span id="cb48-766"><a href="#cb48-766" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to str</span></span>
-<span id="cb48-767"><a href="#cb48-767" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
-<span id="cb48-768"><a href="#cb48-768" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Utf8())</span>
-<span id="cb48-769"><a href="#cb48-769" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb48-770"><a href="#cb48-770" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it as Compartment_2</span></span>
-<span id="cb48-771"><a href="#cb48-771" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_2&quot;</span>)</span>
-<span id="cb48-772"><a href="#cb48-772" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb48-773"><a href="#cb48-773" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-774"><a href="#cb48-774" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-775"><a href="#cb48-775" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Concat the two columns to create a full list</span>
-<span id="cb48-778"><a href="#cb48-778" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-779"><a href="#cb48-779" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-concat-columns</span></span>
-<span id="cb48-780"><a href="#cb48-780" aria-hidden="true" tabindex="-1"></a>day3_5 <span class="op">=</span> day3_4.with_columns([</span>
-<span id="cb48-781"><a href="#cb48-781" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_1 Column</span></span>
-<span id="cb48-782"><a href="#cb48-782" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
-<span id="cb48-783"><a href="#cb48-783" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Concat the Compartment_2 Column to it</span></span>
-<span id="cb48-784"><a href="#cb48-784" aria-hidden="true" tabindex="-1"></a>    .arr.concat(<span class="st">&quot;Compartment_2&quot;</span>)</span>
-<span id="cb48-785"><a href="#cb48-785" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Create the Compartment_3 Column</span></span>
-<span id="cb48-786"><a href="#cb48-786" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_3&quot;</span>)</span>
-<span id="cb48-787"><a href="#cb48-787" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb48-788"><a href="#cb48-788" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-789"><a href="#cb48-789" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-790"><a href="#cb48-790" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Group-by the three elves in a group on their full list</span>
-<span id="cb48-793"><a href="#cb48-793" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-794"><a href="#cb48-794" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-group-by</span></span>
-<span id="cb48-795"><a href="#cb48-795" aria-hidden="true" tabindex="-1"></a>day3_6 <span class="op">=</span> (</span>
-<span id="cb48-796"><a href="#cb48-796" aria-hidden="true" tabindex="-1"></a>    day3_5</span>
-<span id="cb48-797"><a href="#cb48-797" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Group the day3_5 dataframe by Group_ID column</span></span>
-<span id="cb48-798"><a href="#cb48-798" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">&quot;Group_ID&quot;</span>])</span>
-<span id="cb48-799"><a href="#cb48-799" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And for each of the groups...</span></span>
-<span id="cb48-800"><a href="#cb48-800" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Join the compartment_3 columns</span></span>
-<span id="cb48-801"><a href="#cb48-801" aria-hidden="true" tabindex="-1"></a>    .agg([</span>
-<span id="cb48-802"><a href="#cb48-802" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">&quot;Compartment_3&quot;</span>).arr.join(<span class="st">&quot;,&quot;</span>).alias(<span class="st">&quot;Compartment_3&quot;</span>)</span>
-<span id="cb48-803"><a href="#cb48-803" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb48-804"><a href="#cb48-804" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-805"><a href="#cb48-805" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-806"><a href="#cb48-806" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-807"><a href="#cb48-807" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Slice the full list for the elves into three distinct column. One for each elf.</span>
-<span id="cb48-810"><a href="#cb48-810" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-811"><a href="#cb48-811" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-column-per-member</span></span>
-<span id="cb48-812"><a href="#cb48-812" aria-hidden="true" tabindex="-1"></a>day3_7 <span class="op">=</span> day3_6.with_columns([</span>
-<span id="cb48-813"><a href="#cb48-813" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
-<span id="cb48-814"><a href="#cb48-814" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
-<span id="cb48-815"><a href="#cb48-815" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And slice it into three parts...</span></span>
-<span id="cb48-816"><a href="#cb48-816" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** Grab the first part and store it for </span></span>
-<span id="cb48-817"><a href="#cb48-817" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** member_1</span></span>
-<span id="cb48-818"><a href="#cb48-818" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">slice</span>(<span class="dv">0</span>,<span class="dv">3</span>).arr.get(<span class="dv">0</span>).alias(<span class="st">&quot;Member_1&quot;</span>),</span>
-<span id="cb48-819"><a href="#cb48-819" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
-<span id="cb48-820"><a href="#cb48-820" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
-<span id="cb48-821"><a href="#cb48-821" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And slice it into three parts...</span></span>
-<span id="cb48-822"><a href="#cb48-822" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** Grab the first part and store it for </span></span>
-<span id="cb48-823"><a href="#cb48-823" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** member_2  </span></span>
-<span id="cb48-824"><a href="#cb48-824" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">slice</span>(<span class="dv">0</span>,<span class="dv">3</span>).arr.get(<span class="dv">1</span>).alias(<span class="st">&quot;Member_2&quot;</span>),</span>
-<span id="cb48-825"><a href="#cb48-825" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
-<span id="cb48-826"><a href="#cb48-826" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
-<span id="cb48-827"><a href="#cb48-827" aria-hidden="true" tabindex="-1"></a>        <span class="co">#* And slice it into three parts...</span></span>
-<span id="cb48-828"><a href="#cb48-828" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** Grab the first part and store it for </span></span>
-<span id="cb48-829"><a href="#cb48-829" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** member_3</span></span>
-<span id="cb48-830"><a href="#cb48-830" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">slice</span>(<span class="dv">0</span>,<span class="dv">3</span>).arr.get(<span class="dv">2</span>).alias(<span class="st">&quot;Member_3&quot;</span>),</span>
-<span id="cb48-831"><a href="#cb48-831" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb48-832"><a href="#cb48-832" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-833"><a href="#cb48-833" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-834"><a href="#cb48-834" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Split the list for each elf</span>
-<span id="cb48-837"><a href="#cb48-837" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-838"><a href="#cb48-838" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-split-the-elf-list</span></span>
-<span id="cb48-839"><a href="#cb48-839" aria-hidden="true" tabindex="-1"></a>day3_8 <span class="op">=</span> day3_7.with_columns([</span>
-<span id="cb48-840"><a href="#cb48-840" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1 column</span></span>
-<span id="cb48-841"><a href="#cb48-841" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
-<span id="cb48-842"><a href="#cb48-842" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And split it by commas</span></span>
-<span id="cb48-843"><a href="#cb48-843" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.split(<span class="st">&quot;,&quot;</span>)</span>
-<span id="cb48-844"><a href="#cb48-844" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_1</span></span>
-<span id="cb48-845"><a href="#cb48-845" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_1&quot;</span>),</span>
-<span id="cb48-846"><a href="#cb48-846" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_2 column</span></span>
-<span id="cb48-847"><a href="#cb48-847" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_2&quot;</span>)</span>
-<span id="cb48-848"><a href="#cb48-848" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And split it by commas</span></span>
-<span id="cb48-849"><a href="#cb48-849" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.split(<span class="st">&quot;,&quot;</span>)</span>
-<span id="cb48-850"><a href="#cb48-850" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_2</span></span>
-<span id="cb48-851"><a href="#cb48-851" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_2&quot;</span>),</span>
-<span id="cb48-852"><a href="#cb48-852" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_3 column</span></span>
-<span id="cb48-853"><a href="#cb48-853" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_3&quot;</span>)</span>
-<span id="cb48-854"><a href="#cb48-854" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And split it by commas</span></span>
-<span id="cb48-855"><a href="#cb48-855" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.split(<span class="st">&quot;,&quot;</span>)</span>
-<span id="cb48-856"><a href="#cb48-856" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_3</span></span>
-<span id="cb48-857"><a href="#cb48-857" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_3&quot;</span>)</span>
-<span id="cb48-858"><a href="#cb48-858" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb48-859"><a href="#cb48-859" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-860"><a href="#cb48-860" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-861"><a href="#cb48-861" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Convert the list for each elf back into an integer</span>
-<span id="cb48-864"><a href="#cb48-864" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-865"><a href="#cb48-865" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-convert-elf-list-to-int</span></span>
-<span id="cb48-866"><a href="#cb48-866" aria-hidden="true" tabindex="-1"></a>day3_9 <span class="op">=</span> day3_8.with_columns([</span>
-<span id="cb48-867"><a href="#cb48-867" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1 column</span></span>
-<span id="cb48-868"><a href="#cb48-868" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
-<span id="cb48-869"><a href="#cb48-869" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And convert the elements to integers</span></span>
-<span id="cb48-870"><a href="#cb48-870" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
-<span id="cb48-871"><a href="#cb48-871" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Int64())</span>
-<span id="cb48-872"><a href="#cb48-872" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb48-873"><a href="#cb48-873" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result to Member_1</span></span>
-<span id="cb48-874"><a href="#cb48-874" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_1&quot;</span>),</span>
-<span id="cb48-875"><a href="#cb48-875" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_2 column</span></span>
-<span id="cb48-876"><a href="#cb48-876" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_2&quot;</span>)</span>
-<span id="cb48-877"><a href="#cb48-877" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And convert the elements to integers</span></span>
-<span id="cb48-878"><a href="#cb48-878" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
-<span id="cb48-879"><a href="#cb48-879" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Int64())</span>
-<span id="cb48-880"><a href="#cb48-880" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb48-881"><a href="#cb48-881" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result to Member_2</span></span>
-<span id="cb48-882"><a href="#cb48-882" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_2&quot;</span>),</span>
-<span id="cb48-883"><a href="#cb48-883" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the member_3 column</span></span>
-<span id="cb48-884"><a href="#cb48-884" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_3&quot;</span>)</span>
-<span id="cb48-885"><a href="#cb48-885" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And convert the elements to integers</span></span>
-<span id="cb48-886"><a href="#cb48-886" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
-<span id="cb48-887"><a href="#cb48-887" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Int64())</span>
-<span id="cb48-888"><a href="#cb48-888" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb48-889"><a href="#cb48-889" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result to Member_3</span></span>
-<span id="cb48-890"><a href="#cb48-890" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_3&quot;</span>)</span>
-<span id="cb48-891"><a href="#cb48-891" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb48-892"><a href="#cb48-892" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-893"><a href="#cb48-893" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-894"><a href="#cb48-894" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Find the unique values between the three columns, then keep the ones that are unique</span>
-<span id="cb48-897"><a href="#cb48-897" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-898"><a href="#cb48-898" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-unique-value-hunting</span></span>
-<span id="cb48-899"><a href="#cb48-899" aria-hidden="true" tabindex="-1"></a>day3_10 <span class="op">=</span> day3_9.with_columns([</span>
-<span id="cb48-900"><a href="#cb48-900" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the member_1 column</span></span>
-<span id="cb48-901"><a href="#cb48-901" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
-<span id="cb48-902"><a href="#cb48-902" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And find its unique values</span></span>
-<span id="cb48-903"><a href="#cb48-903" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-904"><a href="#cb48-904" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_1_Uniq</span></span>
-<span id="cb48-905"><a href="#cb48-905" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_1_Uniq&quot;</span>),</span>
-<span id="cb48-906"><a href="#cb48-906" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_2 column</span></span>
-<span id="cb48-907"><a href="#cb48-907" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_2&quot;</span>)</span>
-<span id="cb48-908"><a href="#cb48-908" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And find its unique values</span></span>
-<span id="cb48-909"><a href="#cb48-909" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-910"><a href="#cb48-910" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_2_Uniq</span></span>
-<span id="cb48-911"><a href="#cb48-911" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_2_Uniq&quot;</span>),</span>
-<span id="cb48-912"><a href="#cb48-912" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_3 column</span></span>
-<span id="cb48-913"><a href="#cb48-913" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_3&quot;</span>)</span>
-<span id="cb48-914"><a href="#cb48-914" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And find its unique values</span></span>
-<span id="cb48-915"><a href="#cb48-915" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-916"><a href="#cb48-916" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_3_Uniq</span></span>
-<span id="cb48-917"><a href="#cb48-917" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_3_Uniq&quot;</span>)</span>
-<span id="cb48-918"><a href="#cb48-918" aria-hidden="true" tabindex="-1"></a>]).with_columns([</span>
-<span id="cb48-919"><a href="#cb48-919" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1_Uniq column</span></span>
-<span id="cb48-920"><a href="#cb48-920" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1_Uniq&quot;</span>)</span>
-<span id="cb48-921"><a href="#cb48-921" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And concat the Member_2_Uniq column to it</span></span>
-<span id="cb48-922"><a href="#cb48-922" aria-hidden="true" tabindex="-1"></a>    .arr.concat(pl.col(<span class="st">&quot;Member_2_Uniq&quot;</span>))</span>
-<span id="cb48-923"><a href="#cb48-923" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* From the full list, keep the values that are duplicates</span></span>
-<span id="cb48-924"><a href="#cb48-924" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">filter</span>(pl.element().is_duplicated()))</span>
-<span id="cb48-925"><a href="#cb48-925" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Keep the unique values from that result</span></span>
-<span id="cb48-926"><a href="#cb48-926" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-927"><a href="#cb48-927" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Match_12</span></span>
-<span id="cb48-928"><a href="#cb48-928" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match_12&quot;</span>)</span>
-<span id="cb48-929"><a href="#cb48-929" aria-hidden="true" tabindex="-1"></a>]).with_columns([</span>
-<span id="cb48-930"><a href="#cb48-930" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Match_12</span></span>
-<span id="cb48-931"><a href="#cb48-931" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match_12&quot;</span>)</span>
-<span id="cb48-932"><a href="#cb48-932" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Concat Member_3_Uniq to it</span></span>
-<span id="cb48-933"><a href="#cb48-933" aria-hidden="true" tabindex="-1"></a>    .arr.concat(pl.col(<span class="st">&quot;Member_3_Uniq&quot;</span>))</span>
-<span id="cb48-934"><a href="#cb48-934" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* From the full list, find the values that are duplicates</span></span>
-<span id="cb48-935"><a href="#cb48-935" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">filter</span>(pl.element().is_duplicated()))</span>
-<span id="cb48-936"><a href="#cb48-936" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Keep the unique values from that result</span></span>
-<span id="cb48-937"><a href="#cb48-937" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
-<span id="cb48-938"><a href="#cb48-938" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Match</span></span>
-<span id="cb48-939"><a href="#cb48-939" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match&quot;</span>)</span>
-<span id="cb48-940"><a href="#cb48-940" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb48-941"><a href="#cb48-941" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-942"><a href="#cb48-942" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-943"><a href="#cb48-943" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Sum across the priority values remaining</span>
-<span id="cb48-946"><a href="#cb48-946" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-947"><a href="#cb48-947" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-sum-within-group</span></span>
-<span id="cb48-948"><a href="#cb48-948" aria-hidden="true" tabindex="-1"></a>day3_11 <span class="op">=</span> day3_10.with_column(</span>
-<span id="cb48-949"><a href="#cb48-949" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the match column</span></span>
-<span id="cb48-950"><a href="#cb48-950" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match&quot;</span>)</span>
-<span id="cb48-951"><a href="#cb48-951" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Sum across elements within the cell</span></span>
-<span id="cb48-952"><a href="#cb48-952" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">sum</span>())</span>
-<span id="cb48-953"><a href="#cb48-953" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And grab the result</span></span>
-<span id="cb48-954"><a href="#cb48-954" aria-hidden="true" tabindex="-1"></a>    .arr.get(<span class="dv">0</span>)</span>
-<span id="cb48-955"><a href="#cb48-955" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* then store the result in Sum</span></span>
-<span id="cb48-956"><a href="#cb48-956" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Sum&quot;</span>)</span>
-<span id="cb48-957"><a href="#cb48-957" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-958"><a href="#cb48-958" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-959"><a href="#cb48-959" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Sum across all the groups</span>
-<span id="cb48-962"><a href="#cb48-962" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-963"><a href="#cb48-963" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-sum-between-group</span></span>
-<span id="cb48-964"><a href="#cb48-964" aria-hidden="true" tabindex="-1"></a>day3_2_ans <span class="op">=</span> day3_11.select(</span>
-<span id="cb48-965"><a href="#cb48-965" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Sum column</span></span>
-<span id="cb48-966"><a href="#cb48-966" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Sum&quot;</span>)</span>
-<span id="cb48-967"><a href="#cb48-967" aria-hidden="true" tabindex="-1"></a>).<span class="bu">sum</span>() <span class="co"># and sum across groups</span></span>
-<span id="cb48-968"><a href="#cb48-968" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-969"><a href="#cb48-969" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-970"><a href="#cb48-970" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-971"><a href="#cb48-971" aria-hidden="true" tabindex="-1"></a>:::{.callout-important appearance=&quot;minimal&quot;}</span>
-<span id="cb48-972"><a href="#cb48-972" aria-hidden="true" tabindex="-1"></a><span class="fu">## Answer</span></span>
-<span id="cb48-975"><a href="#cb48-975" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb48-976"><a href="#cb48-976" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: display-3-2-answer</span></span>
-<span id="cb48-977"><a href="#cb48-977" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 3, Part 2 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day3_2_ans[<span class="dv">0</span>,<span class="dv">0</span>]))</span>
-<span id="cb48-978"><a href="#cb48-978" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb48-979"><a href="#cb48-979" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb48-980"><a href="#cb48-980" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-981"><a href="#cb48-981" aria-hidden="true" tabindex="-1"></a>I first did this with some loops and it was real quick and easy, but I have a project that kind of has some similar steps and wanted to figure out how to do it this way... this was absolutely a trash performance by me.</span>
-<span id="cb48-982"><a href="#cb48-982" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb48-983"><a href="#cb48-983" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="re">END</span><span class="co"> OF Day 3 Section</span></span>
-<span id="cb48-984"><a href="#cb48-984" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
-<span id="cb48-985"><a href="#cb48-985" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb48-986"><a href="#cb48-986" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="re">END</span><span class="co"> OF DOCUMENT</span></span>
-<span id="cb48-987"><a href="#cb48-987" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+<span id="cb48-727"><a href="#cb48-727" aria-hidden="true" tabindex="-1"></a>Additionally, nobody wrote down which item type corresponds to each group&#39;s badges. The only way to tell which item type is the right one is by finding the one item type that is common between all three Elves in each group.</span>
+<span id="cb48-728"><a href="#cb48-728" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-729"><a href="#cb48-729" aria-hidden="true" tabindex="-1"></a>Every set of three lines in your list corresponds to a single group, but each group can have a different badge item type. So, in the above example, the first group&#39;s rucksacks are the first three lines:</span>
+<span id="cb48-730"><a href="#cb48-730" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-731"><a href="#cb48-731" aria-hidden="true" tabindex="-1"></a>vJrwpWtwJgWrhcsFMMfFFhFp</span>
+<span id="cb48-732"><a href="#cb48-732" aria-hidden="true" tabindex="-1"></a>jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL</span>
+<span id="cb48-733"><a href="#cb48-733" aria-hidden="true" tabindex="-1"></a>PmmdzqPrVvPwwTWBwg</span>
+<span id="cb48-734"><a href="#cb48-734" aria-hidden="true" tabindex="-1"></a>And the second group&#39;s rucksacks are the next three lines:</span>
+<span id="cb48-735"><a href="#cb48-735" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-736"><a href="#cb48-736" aria-hidden="true" tabindex="-1"></a>wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn</span>
+<span id="cb48-737"><a href="#cb48-737" aria-hidden="true" tabindex="-1"></a>ttgJtRGJQctTZtZT</span>
+<span id="cb48-738"><a href="#cb48-738" aria-hidden="true" tabindex="-1"></a>CrZsJsPPZsGzwwsLwLmpwMDw</span>
+<span id="cb48-739"><a href="#cb48-739" aria-hidden="true" tabindex="-1"></a>In the first group, the only item type that appears in all three rucksacks is lowercase r; this must be their badges. In the second group, their badge item type must be Z.</span>
+<span id="cb48-740"><a href="#cb48-740" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-741"><a href="#cb48-741" aria-hidden="true" tabindex="-1"></a>Priorities for these items must still be found to organize the sticker attachment efforts: here, they are 18 (r) for the first group and 52 (Z) for the second group. The sum of these is 70.</span>
+<span id="cb48-742"><a href="#cb48-742" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-743"><a href="#cb48-743" aria-hidden="true" tabindex="-1"></a>Find the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?</span>
+<span id="cb48-744"><a href="#cb48-744" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb48-745"><a href="#cb48-745" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-746"><a href="#cb48-746" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Create Group ID, and convert columns to Utf</span>
+<span id="cb48-749"><a href="#cb48-749" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-750"><a href="#cb48-750" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-create-group-id</span></span>
+<span id="cb48-751"><a href="#cb48-751" aria-hidden="true" tabindex="-1"></a>day3_4 <span class="op">=</span> day3_1.with_columns([</span>
+<span id="cb48-752"><a href="#cb48-752" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* take the original column...</span></span>
+<span id="cb48-753"><a href="#cb48-753" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Original&quot;</span>),</span>
+<span id="cb48-754"><a href="#cb48-754" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* add a new column of the same length...</span></span>
+<span id="cb48-755"><a href="#cb48-755" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* repeating values every 3 rows</span></span>
+<span id="cb48-756"><a href="#cb48-756" aria-hidden="true" tabindex="-1"></a>    pl.Series(np.repeat(np.arange(<span class="dv">100</span>), <span class="dv">3</span>))</span>
+<span id="cb48-757"><a href="#cb48-757" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* store it as Group_ID</span></span>
+<span id="cb48-758"><a href="#cb48-758" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Group_ID&quot;</span>)</span>
+<span id="cb48-759"><a href="#cb48-759" aria-hidden="true" tabindex="-1"></a>]).with_columns([</span>
+<span id="cb48-760"><a href="#cb48-760" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_1 column</span></span>
+<span id="cb48-761"><a href="#cb48-761" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
+<span id="cb48-762"><a href="#cb48-762" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to str</span></span>
+<span id="cb48-763"><a href="#cb48-763" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
+<span id="cb48-764"><a href="#cb48-764" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Utf8())</span>
+<span id="cb48-765"><a href="#cb48-765" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-766"><a href="#cb48-766" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it as Compartment_1</span></span>
+<span id="cb48-767"><a href="#cb48-767" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_1&quot;</span>),</span>
+<span id="cb48-768"><a href="#cb48-768" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_2 column</span></span>
+<span id="cb48-769"><a href="#cb48-769" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_2&quot;</span>)</span>
+<span id="cb48-770"><a href="#cb48-770" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Convert it to str</span></span>
+<span id="cb48-771"><a href="#cb48-771" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
+<span id="cb48-772"><a href="#cb48-772" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Utf8())</span>
+<span id="cb48-773"><a href="#cb48-773" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-774"><a href="#cb48-774" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store it as Compartment_2</span></span>
+<span id="cb48-775"><a href="#cb48-775" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_2&quot;</span>)</span>
+<span id="cb48-776"><a href="#cb48-776" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb48-777"><a href="#cb48-777" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-778"><a href="#cb48-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-779"><a href="#cb48-779" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Concat the two columns to create a full list</span>
+<span id="cb48-782"><a href="#cb48-782" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-783"><a href="#cb48-783" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-concat-columns</span></span>
+<span id="cb48-784"><a href="#cb48-784" aria-hidden="true" tabindex="-1"></a>day3_5 <span class="op">=</span> day3_4.with_columns([</span>
+<span id="cb48-785"><a href="#cb48-785" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Grab the Compartment_1 Column</span></span>
+<span id="cb48-786"><a href="#cb48-786" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_1&quot;</span>)</span>
+<span id="cb48-787"><a href="#cb48-787" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Concat the Compartment_2 Column to it</span></span>
+<span id="cb48-788"><a href="#cb48-788" aria-hidden="true" tabindex="-1"></a>    .arr.concat(<span class="st">&quot;Compartment_2&quot;</span>)</span>
+<span id="cb48-789"><a href="#cb48-789" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Create the Compartment_3 Column</span></span>
+<span id="cb48-790"><a href="#cb48-790" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Compartment_3&quot;</span>)</span>
+<span id="cb48-791"><a href="#cb48-791" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb48-792"><a href="#cb48-792" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-793"><a href="#cb48-793" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-794"><a href="#cb48-794" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Group-by the three elves in a group on their full list</span>
+<span id="cb48-797"><a href="#cb48-797" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-798"><a href="#cb48-798" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-group-by</span></span>
+<span id="cb48-799"><a href="#cb48-799" aria-hidden="true" tabindex="-1"></a>day3_6 <span class="op">=</span> (</span>
+<span id="cb48-800"><a href="#cb48-800" aria-hidden="true" tabindex="-1"></a>    day3_5</span>
+<span id="cb48-801"><a href="#cb48-801" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Group the day3_5 dataframe by Group_ID column</span></span>
+<span id="cb48-802"><a href="#cb48-802" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">&quot;Group_ID&quot;</span>])</span>
+<span id="cb48-803"><a href="#cb48-803" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And for each of the groups...</span></span>
+<span id="cb48-804"><a href="#cb48-804" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Join the compartment_3 columns</span></span>
+<span id="cb48-805"><a href="#cb48-805" aria-hidden="true" tabindex="-1"></a>    .agg([</span>
+<span id="cb48-806"><a href="#cb48-806" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">&quot;Compartment_3&quot;</span>).arr.join(<span class="st">&quot;,&quot;</span>).alias(<span class="st">&quot;Compartment_3&quot;</span>)</span>
+<span id="cb48-807"><a href="#cb48-807" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb48-808"><a href="#cb48-808" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-809"><a href="#cb48-809" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-810"><a href="#cb48-810" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-811"><a href="#cb48-811" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Slice the full list for the elves into three distinct column. One for each elf.</span>
+<span id="cb48-814"><a href="#cb48-814" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-815"><a href="#cb48-815" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-column-per-member</span></span>
+<span id="cb48-816"><a href="#cb48-816" aria-hidden="true" tabindex="-1"></a>day3_7 <span class="op">=</span> day3_6.with_columns([</span>
+<span id="cb48-817"><a href="#cb48-817" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
+<span id="cb48-818"><a href="#cb48-818" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
+<span id="cb48-819"><a href="#cb48-819" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And slice it into three parts...</span></span>
+<span id="cb48-820"><a href="#cb48-820" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** Grab the first part and store it for </span></span>
+<span id="cb48-821"><a href="#cb48-821" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** member_1</span></span>
+<span id="cb48-822"><a href="#cb48-822" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">slice</span>(<span class="dv">0</span>,<span class="dv">3</span>).arr.get(<span class="dv">0</span>).alias(<span class="st">&quot;Member_1&quot;</span>),</span>
+<span id="cb48-823"><a href="#cb48-823" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
+<span id="cb48-824"><a href="#cb48-824" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
+<span id="cb48-825"><a href="#cb48-825" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And slice it into three parts...</span></span>
+<span id="cb48-826"><a href="#cb48-826" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** Grab the first part and store it for </span></span>
+<span id="cb48-827"><a href="#cb48-827" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** member_2  </span></span>
+<span id="cb48-828"><a href="#cb48-828" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">slice</span>(<span class="dv">0</span>,<span class="dv">3</span>).arr.get(<span class="dv">1</span>).alias(<span class="st">&quot;Member_2&quot;</span>),</span>
+<span id="cb48-829"><a href="#cb48-829" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Compartment_3 column</span></span>
+<span id="cb48-830"><a href="#cb48-830" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Compartment_3&quot;</span>)</span>
+<span id="cb48-831"><a href="#cb48-831" aria-hidden="true" tabindex="-1"></a>        <span class="co">#* And slice it into three parts...</span></span>
+<span id="cb48-832"><a href="#cb48-832" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** Grab the first part and store it for </span></span>
+<span id="cb48-833"><a href="#cb48-833" aria-hidden="true" tabindex="-1"></a>        <span class="co">#** member_3</span></span>
+<span id="cb48-834"><a href="#cb48-834" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">slice</span>(<span class="dv">0</span>,<span class="dv">3</span>).arr.get(<span class="dv">2</span>).alias(<span class="st">&quot;Member_3&quot;</span>),</span>
+<span id="cb48-835"><a href="#cb48-835" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb48-836"><a href="#cb48-836" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-837"><a href="#cb48-837" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-838"><a href="#cb48-838" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Split the list for each elf</span>
+<span id="cb48-841"><a href="#cb48-841" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-842"><a href="#cb48-842" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-split-the-elf-list</span></span>
+<span id="cb48-843"><a href="#cb48-843" aria-hidden="true" tabindex="-1"></a>day3_8 <span class="op">=</span> day3_7.with_columns([</span>
+<span id="cb48-844"><a href="#cb48-844" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1 column</span></span>
+<span id="cb48-845"><a href="#cb48-845" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
+<span id="cb48-846"><a href="#cb48-846" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And split it by commas</span></span>
+<span id="cb48-847"><a href="#cb48-847" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.split(<span class="st">&quot;,&quot;</span>)</span>
+<span id="cb48-848"><a href="#cb48-848" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_1</span></span>
+<span id="cb48-849"><a href="#cb48-849" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_1&quot;</span>),</span>
+<span id="cb48-850"><a href="#cb48-850" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_2 column</span></span>
+<span id="cb48-851"><a href="#cb48-851" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_2&quot;</span>)</span>
+<span id="cb48-852"><a href="#cb48-852" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And split it by commas</span></span>
+<span id="cb48-853"><a href="#cb48-853" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.split(<span class="st">&quot;,&quot;</span>)</span>
+<span id="cb48-854"><a href="#cb48-854" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_2</span></span>
+<span id="cb48-855"><a href="#cb48-855" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_2&quot;</span>),</span>
+<span id="cb48-856"><a href="#cb48-856" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_3 column</span></span>
+<span id="cb48-857"><a href="#cb48-857" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_3&quot;</span>)</span>
+<span id="cb48-858"><a href="#cb48-858" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And split it by commas</span></span>
+<span id="cb48-859"><a href="#cb48-859" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">str</span>.split(<span class="st">&quot;,&quot;</span>)</span>
+<span id="cb48-860"><a href="#cb48-860" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_3</span></span>
+<span id="cb48-861"><a href="#cb48-861" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_3&quot;</span>)</span>
+<span id="cb48-862"><a href="#cb48-862" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb48-863"><a href="#cb48-863" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-864"><a href="#cb48-864" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-865"><a href="#cb48-865" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Convert the list for each elf back into an integer</span>
+<span id="cb48-868"><a href="#cb48-868" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-869"><a href="#cb48-869" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-convert-elf-list-to-int</span></span>
+<span id="cb48-870"><a href="#cb48-870" aria-hidden="true" tabindex="-1"></a>day3_9 <span class="op">=</span> day3_8.with_columns([</span>
+<span id="cb48-871"><a href="#cb48-871" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1 column</span></span>
+<span id="cb48-872"><a href="#cb48-872" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
+<span id="cb48-873"><a href="#cb48-873" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And convert the elements to integers</span></span>
+<span id="cb48-874"><a href="#cb48-874" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
+<span id="cb48-875"><a href="#cb48-875" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Int64())</span>
+<span id="cb48-876"><a href="#cb48-876" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-877"><a href="#cb48-877" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result to Member_1</span></span>
+<span id="cb48-878"><a href="#cb48-878" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_1&quot;</span>),</span>
+<span id="cb48-879"><a href="#cb48-879" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_2 column</span></span>
+<span id="cb48-880"><a href="#cb48-880" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_2&quot;</span>)</span>
+<span id="cb48-881"><a href="#cb48-881" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And convert the elements to integers</span></span>
+<span id="cb48-882"><a href="#cb48-882" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
+<span id="cb48-883"><a href="#cb48-883" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Int64())</span>
+<span id="cb48-884"><a href="#cb48-884" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-885"><a href="#cb48-885" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result to Member_2</span></span>
+<span id="cb48-886"><a href="#cb48-886" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_2&quot;</span>),</span>
+<span id="cb48-887"><a href="#cb48-887" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the member_3 column</span></span>
+<span id="cb48-888"><a href="#cb48-888" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_3&quot;</span>)</span>
+<span id="cb48-889"><a href="#cb48-889" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And convert the elements to integers</span></span>
+<span id="cb48-890"><a href="#cb48-890" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(</span>
+<span id="cb48-891"><a href="#cb48-891" aria-hidden="true" tabindex="-1"></a>        pl.element().cast(pl.Int64())</span>
+<span id="cb48-892"><a href="#cb48-892" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-893"><a href="#cb48-893" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result to Member_3</span></span>
+<span id="cb48-894"><a href="#cb48-894" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_3&quot;</span>)</span>
+<span id="cb48-895"><a href="#cb48-895" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb48-896"><a href="#cb48-896" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-897"><a href="#cb48-897" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-898"><a href="#cb48-898" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Find the unique values between the three columns, then keep the ones that are unique</span>
+<span id="cb48-901"><a href="#cb48-901" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-902"><a href="#cb48-902" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-unique-value-hunting</span></span>
+<span id="cb48-903"><a href="#cb48-903" aria-hidden="true" tabindex="-1"></a>day3_10 <span class="op">=</span> day3_9.with_columns([</span>
+<span id="cb48-904"><a href="#cb48-904" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the member_1 column</span></span>
+<span id="cb48-905"><a href="#cb48-905" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1&quot;</span>)</span>
+<span id="cb48-906"><a href="#cb48-906" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And find its unique values</span></span>
+<span id="cb48-907"><a href="#cb48-907" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-908"><a href="#cb48-908" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_1_Uniq</span></span>
+<span id="cb48-909"><a href="#cb48-909" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_1_Uniq&quot;</span>),</span>
+<span id="cb48-910"><a href="#cb48-910" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_2 column</span></span>
+<span id="cb48-911"><a href="#cb48-911" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_2&quot;</span>)</span>
+<span id="cb48-912"><a href="#cb48-912" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And find its unique values</span></span>
+<span id="cb48-913"><a href="#cb48-913" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-914"><a href="#cb48-914" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_2_Uniq</span></span>
+<span id="cb48-915"><a href="#cb48-915" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_2_Uniq&quot;</span>),</span>
+<span id="cb48-916"><a href="#cb48-916" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_3 column</span></span>
+<span id="cb48-917"><a href="#cb48-917" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_3&quot;</span>)</span>
+<span id="cb48-918"><a href="#cb48-918" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And find its unique values</span></span>
+<span id="cb48-919"><a href="#cb48-919" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-920"><a href="#cb48-920" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Member_3_Uniq</span></span>
+<span id="cb48-921"><a href="#cb48-921" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Member_3_Uniq&quot;</span>)</span>
+<span id="cb48-922"><a href="#cb48-922" aria-hidden="true" tabindex="-1"></a>]).with_columns([</span>
+<span id="cb48-923"><a href="#cb48-923" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Member_1_Uniq column</span></span>
+<span id="cb48-924"><a href="#cb48-924" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Member_1_Uniq&quot;</span>)</span>
+<span id="cb48-925"><a href="#cb48-925" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And concat the Member_2_Uniq column to it</span></span>
+<span id="cb48-926"><a href="#cb48-926" aria-hidden="true" tabindex="-1"></a>    .arr.concat(pl.col(<span class="st">&quot;Member_2_Uniq&quot;</span>))</span>
+<span id="cb48-927"><a href="#cb48-927" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* From the full list, keep the values that are duplicates</span></span>
+<span id="cb48-928"><a href="#cb48-928" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">filter</span>(pl.element().is_duplicated()))</span>
+<span id="cb48-929"><a href="#cb48-929" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Keep the unique values from that result</span></span>
+<span id="cb48-930"><a href="#cb48-930" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-931"><a href="#cb48-931" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Match_12</span></span>
+<span id="cb48-932"><a href="#cb48-932" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match_12&quot;</span>)</span>
+<span id="cb48-933"><a href="#cb48-933" aria-hidden="true" tabindex="-1"></a>]).with_columns([</span>
+<span id="cb48-934"><a href="#cb48-934" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take Match_12</span></span>
+<span id="cb48-935"><a href="#cb48-935" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match_12&quot;</span>)</span>
+<span id="cb48-936"><a href="#cb48-936" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Concat Member_3_Uniq to it</span></span>
+<span id="cb48-937"><a href="#cb48-937" aria-hidden="true" tabindex="-1"></a>    .arr.concat(pl.col(<span class="st">&quot;Member_3_Uniq&quot;</span>))</span>
+<span id="cb48-938"><a href="#cb48-938" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* From the full list, find the values that are duplicates</span></span>
+<span id="cb48-939"><a href="#cb48-939" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">filter</span>(pl.element().is_duplicated()))</span>
+<span id="cb48-940"><a href="#cb48-940" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Keep the unique values from that result</span></span>
+<span id="cb48-941"><a href="#cb48-941" aria-hidden="true" tabindex="-1"></a>    .arr.unique()</span>
+<span id="cb48-942"><a href="#cb48-942" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Store the result in Match</span></span>
+<span id="cb48-943"><a href="#cb48-943" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Match&quot;</span>)</span>
+<span id="cb48-944"><a href="#cb48-944" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb48-945"><a href="#cb48-945" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-946"><a href="#cb48-946" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-947"><a href="#cb48-947" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Sum across the priority values remaining</span>
+<span id="cb48-950"><a href="#cb48-950" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-951"><a href="#cb48-951" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-sum-within-group</span></span>
+<span id="cb48-952"><a href="#cb48-952" aria-hidden="true" tabindex="-1"></a>day3_11 <span class="op">=</span> day3_10.with_column(</span>
+<span id="cb48-953"><a href="#cb48-953" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the match column</span></span>
+<span id="cb48-954"><a href="#cb48-954" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Match&quot;</span>)</span>
+<span id="cb48-955"><a href="#cb48-955" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Sum across elements within the cell</span></span>
+<span id="cb48-956"><a href="#cb48-956" aria-hidden="true" tabindex="-1"></a>    .arr.<span class="bu">eval</span>(pl.element().<span class="bu">sum</span>())</span>
+<span id="cb48-957"><a href="#cb48-957" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* And grab the result</span></span>
+<span id="cb48-958"><a href="#cb48-958" aria-hidden="true" tabindex="-1"></a>    .arr.get(<span class="dv">0</span>)</span>
+<span id="cb48-959"><a href="#cb48-959" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* then store the result in Sum</span></span>
+<span id="cb48-960"><a href="#cb48-960" aria-hidden="true" tabindex="-1"></a>    .alias(<span class="st">&quot;Sum&quot;</span>)</span>
+<span id="cb48-961"><a href="#cb48-961" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-962"><a href="#cb48-962" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-963"><a href="#cb48-963" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Sum across all the groups</span>
+<span id="cb48-966"><a href="#cb48-966" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-967"><a href="#cb48-967" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: day3-2-sum-between-group</span></span>
+<span id="cb48-968"><a href="#cb48-968" aria-hidden="true" tabindex="-1"></a>day3_2_ans <span class="op">=</span> day3_11.select(</span>
+<span id="cb48-969"><a href="#cb48-969" aria-hidden="true" tabindex="-1"></a>    <span class="co">#* Take the Sum column</span></span>
+<span id="cb48-970"><a href="#cb48-970" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">&quot;Sum&quot;</span>)</span>
+<span id="cb48-971"><a href="#cb48-971" aria-hidden="true" tabindex="-1"></a>).<span class="bu">sum</span>() <span class="co"># and sum across groups</span></span>
+<span id="cb48-972"><a href="#cb48-972" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-973"><a href="#cb48-973" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-974"><a href="#cb48-974" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-975"><a href="#cb48-975" aria-hidden="true" tabindex="-1"></a>:::{.callout-important appearance=&quot;minimal&quot;}</span>
+<span id="cb48-976"><a href="#cb48-976" aria-hidden="true" tabindex="-1"></a><span class="fu">## Answer</span></span>
+<span id="cb48-979"><a href="#cb48-979" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb48-980"><a href="#cb48-980" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: display-3-2-answer</span></span>
+<span id="cb48-981"><a href="#cb48-981" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Day 3, Part 2 Answer: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(day3_2_ans[<span class="dv">0</span>,<span class="dv">0</span>]))</span>
+<span id="cb48-982"><a href="#cb48-982" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-983"><a href="#cb48-983" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb48-984"><a href="#cb48-984" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-985"><a href="#cb48-985" aria-hidden="true" tabindex="-1"></a>I first did this with some loops and it was real quick and easy, but I have a project that kind of has some similar steps and wanted to figure out how to do it this way... this was absolutely a trash performance by me.</span>
+<span id="cb48-986"><a href="#cb48-986" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
+<span id="cb48-987"><a href="#cb48-987" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="re">END</span><span class="co"> OF Day 3 Section</span></span>
+<span id="cb48-988"><a href="#cb48-988" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+<span id="cb48-989"><a href="#cb48-989" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
+<span id="cb48-990"><a href="#cb48-990" aria-hidden="true" tabindex="-1"></a><span class="co">    </span><span class="re">END</span><span class="co"> OF DOCUMENT</span></span>
+<span id="cb48-991"><a href="#cb48-991" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

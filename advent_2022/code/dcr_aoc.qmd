@@ -579,6 +579,7 @@ Compartment_1_str = [list(e) for e in Compartment_1]
 Compartment_2_str = [list(e) for e in Compartment_2]
 ```
 
+4. Toss it all into a dataframe
 
 ```{python}
 #* lable: day3-1-dataframe
@@ -597,6 +598,7 @@ day3_1 = pl.DataFrame({
 })
 ```
 
+5. Find the items in common between compartment
 ```{python}
 day3_2 = day3_1.with_columns([
     #* Take Compartment_1
@@ -625,6 +627,7 @@ day3_2 = day3_1.with_columns([
 )
 ```
 
+6. Sum across priority values for each elf
 ```{python}
 day3_3 = day3_2.with_column(
     #* Take Match
@@ -638,6 +641,7 @@ day3_3 = day3_2.with_column(
 )
 ```
 
+7. Sum across summed-priority values for the elves
 ```{python}
 day3_1_ans = day3_3.select(
     #* Grab the sum for each elf
