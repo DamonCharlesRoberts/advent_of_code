@@ -516,6 +516,394 @@ print("Day 2, Part 2 Answer: " + str(score2.select("Score")[0,0]))
     END OF DAY 2 SECTION
 -->
 
+# Day 3
+
+## Part 1
+
+:::{.callout-important appearance="minimal"}
+## Problem
+
+One Elf has the important job of loading all of the rucksacks with supplies for the jungle journey. Unfortunately, that Elf didn't quite follow the packing instructions, and so a few items now need to be rearranged.
+
+Each rucksack has two large compartments. All items of a given type are meant to go into exactly one of the two compartments. The Elf that did the packing failed to follow this rule for exactly one item type per rucksack.
+
+The Elves have made a list of all of the items currently in each rucksack (your puzzle input), but they need your help finding the errors. Every item type is identified by a single lowercase or uppercase letter (that is, a and A refer to different types of items).
+
+The list of items for each rucksack is given as characters all on a single line. A given rucksack always has the same number of items in each of its two compartments, so the first half of the characters represent items in the first compartment, while the second half of the characters represent items in the second compartment.
+
+For example, suppose you have the following list of contents from six rucksacks:
+
+vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw
+The first rucksack contains the items vJrwpWtwJgWrhcsFMMfFFhFp, which means its first compartment contains the items vJrwpWtwJgWr, while the second compartment contains the items hcsFMMfFFhFp. The only item type that appears in both compartments is lowercase p.
+The second rucksack's compartments contain jqHRNqRjqzjGDLGL and rsFMfFZSrLrFZsSL. The only item type that appears in both compartments is uppercase L.
+The third rucksack's compartments contain PmmdzqPrV and vPwwTWBwg; the only common item type is uppercase P.
+The fourth rucksack's compartments only share item type v.
+The fifth rucksack's compartments only share item type t.
+The sixth rucksack's compartments only share item type s.
+To help prioritize item rearrangement, every item type can be converted to a priority:
+
+Lowercase item types a through z have priorities 1 through 26.
+Uppercase item types A through Z have priorities 27 through 52.
+In the above example, the priority of the item type that appears in both compartments of each rucksack is 16 (p), 38 (L), 42 (P), 22 (v), 20 (t), and 19 (s); the sum of these is 157.
+
+Find the item type that appears in both compartments of each rucksack. What is the sum of the priorities of those item types?
+:::
+
+1. Load the input data
+
+```{python}
+#| label: day-3-input-load
+
+# Load input data
+with open("../data/day-3-input.txt") as f:
+    txt = [line.strip() for line in f]
+```
+
+```{python}
+#| label: day3-1-divide-original
+#* Take the length of each element and divide it by 2
+Compartment_1 = [i[0:len(i)//2] for i in txt]
+Compartment_2 = [i[len(i)//2:] for i in txt]
+```
+
+3. Make each character its own string
+
+```{python}
+#| label: day3-1-character-per-string
+Compartment_1_str = [list(e) for e in Compartment_1]
+Compartment_2_str = [list(e) for e in Compartment_2]
+```
+
+
+```{python}
+#* lable: day3-1-dataframe
+# Toss it all into a dataframe
+day3_1 = pl.DataFrame({
+    #* take the txt object and store it in column Original
+    "Original": txt,
+    #* take Compartment_1_str object
+    #* Convert it to ascii numbers - rules from game
+    #* Store it in Compartment_1
+    "Compartment_1": [[(ord(i)-38) if i.isupper() else (ord(i)-96) for i in j] for j in Compartment_1_str],
+    #* take Compartment_2_str object
+    #* Convert it to ascii numbers - rules from game
+    #* Store it in Compartment_2
+    "Compartment_2": [[(ord(i)-38) if i.isupper() else (ord(i)-96) for i in j] for j in Compartment_2_str],
+})
+```
+
+```{python}
+day3_2 = day3_1.with_columns([
+    #* Take Compartment_1
+    pl.col("Compartment_1")
+    #* Find unique values
+    .arr.unique()
+    #* Store unique values in Compartment_1_uniq
+    .alias("Compartment_1_uniq"),
+    #* Take Compartment_2
+    pl.col("Compartment_2")
+    #* Find unique values
+    .arr.unique()
+    #* Store it in Compartment_2_uniq
+    .alias("Compartment_2_uniq")
+]).with_columns(
+    #* Take Compartment_1_uniq
+    pl.col("Compartment_1_uniq")
+    #* Concat Compartment_2_uniq to it
+    .arr.concat(pl.col("Compartment_2_uniq"))
+    #* Find elements that are duplicated between them
+    .arr.eval(pl.element().filter(pl.element().is_duplicated()))
+    #* Find unique values remaining
+    .arr.unique()
+    #* Store result in Match
+    .alias("Match")
+)
+```
+
+```{python}
+day3_3 = day3_2.with_column(
+    #* Take Match
+    pl.col("Match")
+    #* Sum elements in row
+    .arr.eval(pl.element().sum())
+    #* Grab the result
+    .arr.get(0)
+    #* Store result in Sum
+    .alias("Sum")
+)
+```
+
+```{python}
+day3_1_ans = day3_3.select(
+    #* Grab the sum for each elf
+    pl.col("Sum")
+).sum() #* and sum across elves
+```
+
+:::{.callout-important appearance="minimal"}
+## Answer
+```{python}
+print("Day 3, Part 1 Answer: " + str(day3_1_ans[0,0]))
+```
+:::
+
+## Part 2
+
+:::{.callout-important appearance="minimal"}
+## Problem
+As you finish identifying the misplaced items, the Elves come to you with another issue.
+
+For safety, the Elves are divided into groups of three. Every Elf carries a badge that identifies their group. For efficiency, within each group of three Elves, the badge is the only item type carried by all three Elves. That is, if a group's badge is item type B, then all three Elves will have item type B somewhere in their rucksack, and at most two of the Elves will be carrying any other item type.
+
+The problem is that someone forgot to put this year's updated authenticity sticker on the badges. All of the badges need to be pulled out of the rucksacks so the new authenticity stickers can be attached.
+
+Additionally, nobody wrote down which item type corresponds to each group's badges. The only way to tell which item type is the right one is by finding the one item type that is common between all three Elves in each group.
+
+Every set of three lines in your list corresponds to a single group, but each group can have a different badge item type. So, in the above example, the first group's rucksacks are the first three lines:
+
+vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+And the second group's rucksacks are the next three lines:
+
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw
+In the first group, the only item type that appears in all three rucksacks is lowercase r; this must be their badges. In the second group, their badge item type must be Z.
+
+Priorities for these items must still be found to organize the sticker attachment efforts: here, they are 18 (r) for the first group and 52 (Z) for the second group. The sum of these is 70.
+
+Find the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?
+:::
+
+1. Create Group ID, and convert columns to Utf
+```{python}
+#| label: day3-create-group-id
+day3_4 = day3_1.with_columns([
+    #* take the original column...
+    pl.col("Original"),
+    #* add a new column of the same length...
+    #* repeating values every 3 rows
+    pl.Series(np.repeat(np.arange(100), 3))
+    #* store it as Group_ID
+    .alias("Group_ID")
+]).with_columns([
+    #* Grab the Compartment_1 column
+    pl.col("Compartment_1")
+    #* Convert it to str
+    .arr.eval(
+        pl.element().cast(pl.Utf8())
+    )
+    #* Store it as Compartment_1
+    .alias("Compartment_1"),
+    #* Grab the Compartment_2 column
+    pl.col("Compartment_2")
+    #* Convert it to str
+    .arr.eval(
+        pl.element().cast(pl.Utf8())
+    )
+    #* Store it as Compartment_2
+    .alias("Compartment_2")
+])
+```
+
+2. Concat the two columns to create a full list
+```{python}
+#| label: day3-2-concat-columns
+day3_5 = day3_4.with_columns([
+    #* Grab the Compartment_1 Column
+    pl.col("Compartment_1")
+    #* Concat the Compartment_2 Column to it
+    .arr.concat("Compartment_2")
+    #* Create the Compartment_3 Column
+    .alias("Compartment_3")
+])
+```
+
+3. Group-by the three elves in a group on their full list
+```{python}
+#| label: day3-2-group-by
+day3_6 = (
+    day3_5
+    #* Group the day3_5 dataframe by Group_ID column
+    .groupby(["Group_ID"])
+    #* And for each of the groups...
+    #* Join the compartment_3 columns
+    .agg([
+        pl.col("Compartment_3").arr.join(",").alias("Compartment_3")
+    ])
+)
+```
+
+4. Slice the full list for the elves into three distinct column. One for each elf.
+```{python}
+#| label: day3-2-column-per-member
+day3_7 = day3_6.with_columns([
+    #* Take the Compartment_3 column
+    pl.col("Compartment_3")
+    #* And slice it into three parts...
+        #** Grab the first part and store it for 
+        #** member_1
+    .arr.slice(0,3).arr.get(0).alias("Member_1"),
+    #* Take the Compartment_3 column
+    pl.col("Compartment_3")
+    #* And slice it into three parts...
+        #** Grab the first part and store it for 
+        #** member_2  
+    .arr.slice(0,3).arr.get(1).alias("Member_2"),
+    #* Take the Compartment_3 column
+    pl.col("Compartment_3")
+        #* And slice it into three parts...
+        #** Grab the first part and store it for 
+        #** member_3
+    .arr.slice(0,3).arr.get(2).alias("Member_3"),
+])
+```
+
+5. Split the list for each elf
+```{python}
+#| label: day3-2-split-the-elf-list
+day3_8 = day3_7.with_columns([
+    #* Take the Member_1 column
+    pl.col("Member_1")
+    #* And split it by commas
+    .str.split(",")
+    #* Store the result in Member_1
+    .alias("Member_1"),
+    #* Take the Member_2 column
+    pl.col("Member_2")
+    #* And split it by commas
+    .str.split(",")
+    #* Store the result in Member_2
+    .alias("Member_2"),
+    #* Take the Member_3 column
+    pl.col("Member_3")
+    #* And split it by commas
+    .str.split(",")
+    #* Store the result in Member_3
+    .alias("Member_3")
+])
+```
+
+6. Convert the list for each elf back into an integer
+```{python}
+#| label: day3-2-convert-elf-list-to-int
+day3_9 = day3_8.with_columns([
+    #* Take the Member_1 column
+    pl.col("Member_1")
+    #* And convert the elements to integers
+    .arr.eval(
+        pl.element().cast(pl.Int64())
+    )
+    #* Store the result to Member_1
+    .alias("Member_1"),
+    #* Take the Member_2 column
+    pl.col("Member_2")
+    #* And convert the elements to integers
+    .arr.eval(
+        pl.element().cast(pl.Int64())
+    )
+    #* Store the result to Member_2
+    .alias("Member_2"),
+    #* Take the member_3 column
+    pl.col("Member_3")
+    #* And convert the elements to integers
+    .arr.eval(
+        pl.element().cast(pl.Int64())
+    )
+    #* Store the result to Member_3
+    .alias("Member_3")
+])
+```
+
+7. Find the unique values between the three columns, then keep the ones that are unique
+```{python}
+#| label: day3-2-unique-value-hunting
+day3_10 = day3_9.with_columns([
+    #* Take the member_1 column
+    pl.col("Member_1")
+    #* And find its unique values
+    .arr.unique()
+    #* Store the result in Member_1_Uniq
+    .alias("Member_1_Uniq"),
+    #* Take the Member_2 column
+    pl.col("Member_2")
+    #* And find its unique values
+    .arr.unique()
+    #* Store the result in Member_2_Uniq
+    .alias("Member_2_Uniq"),
+    #* Take the Member_3 column
+    pl.col("Member_3")
+    #* And find its unique values
+    .arr.unique()
+    #* Store the result in Member_3_Uniq
+    .alias("Member_3_Uniq")
+]).with_columns([
+    #* Take the Member_1_Uniq column
+    pl.col("Member_1_Uniq")
+    #* And concat the Member_2_Uniq column to it
+    .arr.concat(pl.col("Member_2_Uniq"))
+    #* From the full list, keep the values that are duplicates
+    .arr.eval(pl.element().filter(pl.element().is_duplicated()))
+    #* Keep the unique values from that result
+    .arr.unique()
+    #* Store the result in Match_12
+    .alias("Match_12")
+]).with_columns([
+    #* Take Match_12
+    pl.col("Match_12")
+    #* Concat Member_3_Uniq to it
+    .arr.concat(pl.col("Member_3_Uniq"))
+    #* From the full list, find the values that are duplicates
+    .arr.eval(pl.element().filter(pl.element().is_duplicated()))
+    #* Keep the unique values from that result
+    .arr.unique()
+    #* Store the result in Match
+    .alias("Match")
+])
+```
+
+8. Sum across the priority values remaining
+```{python}
+#| label: day3-2-sum-within-group
+day3_11 = day3_10.with_column(
+    #* Take the match column
+    pl.col("Match")
+    #* Sum across elements within the cell
+    .arr.eval(pl.element().sum())
+    #* And grab the result
+    .arr.get(0)
+    #* then store the result in Sum
+    .alias("Sum")
+)
+```
+9. Sum across all the groups
+```{python}
+#| label: day3-2-sum-between-group
+day3_2_ans = day3_11.select(
+    #* Take the Sum column
+    pl.col("Sum")
+).sum() # and sum across groups
+```
+
+
+:::{.callout-important appearance="minimal"}
+## Answer
+```{python}
+#| label: display-3-2-answer
+print("Day 3, Part 2 Answer: " + str(day3_2_ans[0,0]))
+```
+:::
+
+I first did this with some loops and it was real quick and easy, but I have a project that kind of has some similar steps and wanted to figure out how to do it this way... this was absolutely a trash performance by me.
+<!--
+    END OF Day 3 Section
+-->
 <!--
     END OF DOCUMENT
 -->
